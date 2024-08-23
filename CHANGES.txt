@@ -1,0 +1,154 @@
+Summarise Changes
+3.0.1
+#039:Fixes required due to PR69 changes to AbstractID3v2Tag.getFrame() so that it now always returns list
+
+3.0.0
+#073:Support for writing DSF files
+#084:Add method to copy metadata from Info tag to ID3 tag within a Wav
+#085:AbstractID3v2Tag.getSize() not handling aggregate frames
+#086:Ensure write extra byte after writing ID3Tag if chunk is not even size
+#087:Write extra byte after writing ID3Chunk in AIff Files if chunksize is odd
+#089:Aiff has unnecessary getAudioHeading() when we already have getEncodingType()
+#090:AiffTagWriter doesn't always work if replace the existing ID3tag rather than modifying
+#091:WavTagWriter doesn't always work if replace the existing ID3tag rather than modifying
+#092:Useful to have interface for enclosing tags that support ID3
+#093:Unable to correctly write new ID3chunk if existing corrupt chunk
+#094:AiffTagWriter not handling when existing ID3chunk of odd size at end of file
+#096:Aiff DeleteTag not taking into account padding byte when chunk is not last chunk
+#097:Wav writer needs to consider odd numbered chunk sizes better when writing
+#098:Force ID3Tag within Aiff to be written as of size not odd
+#099:When have ID3 tag in Aiff or Wav padding should be included in ID3header
+#101:Force Wav ID3 Tag to be even sized
+#103:Aiff do not rewrite header unless size has changed
+#112:Mp4TagWriter.writeDataInChunks() always assuming there will be partial chunk to write
+#117:OggWriter, if has to rewrite all pages and encounters a ID3v1tag at end of file it is discarded
+#116:Check that APIC frame actually has image data before trying to get image data length.
+#118:AudioFile.createDefaultTag() is broken, compares e.g. "flac" to ".flac"
+#119:Wav/Aiff Add padding byte if missing in original file when writing metadata
+#121:Output a summary of chunks in AiffTag.toString() and WavTag.toString()
+#123:Support writing VorbisComment AlbumArtist as as either/both 'ALBUMARTIST' and 'ALBUM ARTIST'
+#125:SyncID3toInfo when writing Wav should remove fields that are in INFO not ID3
+#127:Allow choice of whether to write INFO or ID3 chunk first when writing both to Wav
+#128:Windows Explorer expects WAV LISTINFO chunk fields to to have trailing nulls
+#126:WavTagReader takes a very long time reading non ID3/LIST chunks
+#129:IOException get locking file due to Java bug https://bugs.openjdk.java.net/browse/JDK-8025619
+#131:FlacTagWriter should always work without temporary file
+#133:CannotReadException should be subclassed when do not have permissions
+#134:Not writing Wav tags correctly if existing tags and new ones require less space than old ones
+#137:REGRESSION:Not reading flacs with non standard ID3 header at start
+#147:REGRESSION:When need to resize FLAC to add artwork not correctly identifying audio location
+#148:Do not pre-check file permissions
+#135:Made permissions errors loglevel consistent
+#153:When using WavOptions.*SYNC null terminated PartOfSet fields are not copied
+#154:For ID3v23 the TCON frame can end up with multiple values concatenated
+#144:Unable to load file because of problem with FrameBodyUnsupported
+#150:Flac write files OutOfMemoryError: Direct buffer memory
+#156:Support for additional artist sort fields
+#157:Support for contiguous trackNo
+#158:Support for Opus field
+#159:Support for Musichi classical fields
+#160:FlacAudioHeader.getMd5() does not process character "0" correctly
+#161:Incorrectly reading not compressed TENC within ID3v23
+#167:Add proper support for FrameTMCL (Musician Credits)
+#109:Add a field to store tracknodiscno as a contiguous value
+#168:Add generic field INVOLVED_PERSON to map to unmapped entries in TIPL frame
+#167:Conversion of ID3v23 to ID3v24 should't convert all of IPLS frame to TIPL some TMCL
+#172:DeleteArtworkField in AiffTag is unimplemented
+#175:Flac Map error on write because of memory error trying to get memory mapped space, writing using chunks instead
+#187:If VorbisAlbumArtistSaveOptions set to WRITE_ALBUMARTIST should remove JRIVER on write
+#183:OGG: String index out of range: 7
+#192:NumberFormatException when creating ID3v1 tag from ID3v2 tag with textual genres
+#196:Memory Mapping in MP3File.readV2Tag() leads to JVM crashes
+#189:Aiff Reader should never throw BufferUnderflowException even if file is corrupt
+#199:Add support for INSTRUMENT field
+#201:Add support for MinimServer GROUP field
+#155:Missing copyright tag mapping
+#204:Wav with corrupt ID3/LIST placement should not cause complete Read fail
+#205:WAV files can have additional itrk fields added to RIFF chunk
+#181:Null characters are included in WavTag.toString
+#208:Add new OVERALL_WORK field to store tnhe top level work
+#180:Support for ITunes GRP field
+#214:Remove checkFileExists()
+#216:Cannot read mp4s when Mdat length is described as 64bit length header
+#220:Add support for ISWC and IPI codes
+#213:LYRICIST_SORT field missing
+#225:When writing DSF file with existing metadata chunk we dont rewrite DSDChunk filesize to reflect changes due to new metadata chunk
+#229:Read DFF header
+#226:getAudioHeader().isLossless() reports false for WAV files
+#227:Error with wavs containing INFO then ID3 chunks but not at end of file
+#221:Null pointer exception with mp4 files calling getFirst(FieldKey.ITUNES_GROUPING)
+#236:Add audioHeader.format field
+#245:When using ID3v22 Conductor should be written to TP3
+#242:Problem with deprecated frames in ID3 tag conversion
+#238:Avoid crashes caused by corrupt mp3 files
+#250:Multi-value TXXX frames encoded as UTF-16 not read properly
+#254:Missing filename in log message in ID3v23Tag
+#255:Possible missing return in addField in FlacTag after case WRITE_ALBUMARTIST
+#258:setToDefault() should set preserveFileIdentity = true
+#260:MP3Audio getTrackLength() is truncated , all other formats are rounded up
+#265:Fix reading and writing Wavs using 'ID3 ' instead of 'id3, also better handled files with multiple ID3 tags
+#266:Read and remove arbitary null padding sections
+#253:MetadataBlockDataStreamInfo exception when bytes length is 0
+#272:For ID3 rename TXXX:Script to TXXX:SCRIPT
+#273:For WM use WM/ComposerSortOnrder rather than WM/ComposerSort
+#271:Mp4 Out of Bounds Exception
+#269:NoSuchMethodError on Java 10
+#SONGKONG-1211:Rename MUSICBRAINZ_WORK_COMPOSITION to MUSICBRAINZ_TRACK_WORK
+#276:Chapter Frames should be marked as being part of ID3v23 and ID3v24 so files containing these fields can be freely converted between the two
+#278:Add IS_GREATEST_HITS field for single artist compilations instead of setting IS_COMPILATION
+#279:Full Date added to IDv23Tag not deleted with deleteField(YEAR)
+#280:MP4 truncated track length
+#282:Flac:Problem saving files where Image description contains text characters that require more than one byte
+#285:Change order that block types are written to FLAC
+#288:APIC frames not saving description for ID3 based formats
+#291:Do not throw error if unable to decode subframe frames, just log error
+#290:Unable to save Wav files if has existing non-contiguous metadata chunks separated by data chunk
+#270:NullPointerException with some WAV tag conversion
+#297:Allow Wav files that are larger than 2GB
+#298:Move to Java 1.8
+#071:Rewrite Mp4 TagWriter so it doesn't need to use temporary files
+#247:Not able to save this m4a
+#302:java.nio.BufferUnderflowException when reading a corrupted mp3 file
+#303:java.lang.NullPointerException when reading a corrupted audio file
+#259:For Mp3 change adjustPaddingInPlace() so uses FileChannel like FlacTagWriter.insertUsingChunks()
+#211:RandomFile can fail FileNotFoundException just if file being used by another process
+#305:FlacTagWriter should use ShiftData like Mp4 and MP3 so only needs enough memory to store one chunk
+#301:In Mp3 when metadata becomes shorter we dont reclaim the space instead just left as padding
+#209:Write chunk size property not observed
+#309:Tag edition fails for m4a file - and corrupts tag
+#308:corrupt audio files after fix
+#316:NullPointerException at org.jaudiotagger.tag.mp4.field.Mp4GenreField
+#317:VorbisComment:ArrayIndexOutOfBoundsException: arraycopy
+#318:Flac, handle image pictures where the data length is greater than recorded in header
+#320:Wav code for checking incorrectly aligned 'id3 ' chunks incorrectly assumes the following/preceding byte will be null
+#321:Ensure that when reading an mp4 box header, we have at least enough data in the file to actually read the header, if there is less data, ignore it and log a warning.
+#322:Problems writing metadata for DSF files larger than 2GB
+#329:Add support for Roon fields (and also SONGKONG_ID for SongKong)
+#331:Rename ORIGINAL_ALBUM_YEAR to ORIGINALRELEASEDATE so recognized by Roon
+#332:Add support for Roon LIVE field
+#333:For ID3 rename PRODUCER, ARRANGER, ENGINEER, DJMIXER and MIXER to PRODUCER_INVOLVEDPEOPLE etc that will continue to write to TIPL/IPLS
+#333:Add new PRODUCER, ARRANGER, ENGINEER, DJMIXER and MIXER fields and associated sort fields that map to TXXX for ID3
+#334:Remove INVOLVEDPEOPLE mappings such as PRODUCER_INVOLVED PEOPLE and simplify logic
+#335:When converting ID3v23 IPLS frame should convert to TIPL and/or TMCL frame but only if have data
+#336:Add support for Roon ROONALBUMTAG and ROONTRACKTAG fields.
+#337:Open MP4 channels in a try-with-resources block
+#340:Flac reader should check StreamInfo block is too small to read header details
+#343:Dont split ID3v23 IPLS frame into ID3v23 TIPL or TMCL based on content just convert to TIPL
+#PR69:Modified AbstractID3v2Tag.getFrame() so that it now always returns list
+
+2.2.5
+#033:Added getAudioStartPos() and getAudioEndPos() methods to AudioHeader interface and implemented for most formats
+#036:Added getNoSamples() to AudioHeader interface
+#040:If ID3 frame marked as UTF-16 but has no BOM we now look to see if first byte contains data or not, if doesn't likely to be BE otherwise LE
+#041:Fix equality checks for tags so based on contents not simple identity check
+#061:Ensure if you try and set a field value to null an IllegalArgumentException will be thrown for all formats
+#049:Mp4 now able to write file with udta atom plus unknown subatoms as well as meta atom
+#077:Added support writing Aiff artwork
+#078:Track length not being calculated in for Wav files
+#079:Aiff Bitrate not calculated correctly
+#481:Fixed handling of an empty FrameBodyTDAT frame preventing reading of valid TYER frame
+
+2.2.4
+Added support for reading/writing Aiff and Wav metadata
+Now requires Java 1.7
+Added support for deploying versions to bintray
