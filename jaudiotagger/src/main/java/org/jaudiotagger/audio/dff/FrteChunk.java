@@ -15,16 +15,11 @@ public class FrteChunk extends BaseChunk
     private int numFrames;
     private Short rate;
 
-    public FrteChunk(ByteBuffer dataBuffer)
-    {
-        super(dataBuffer);
-    }
+    public FrteChunk() {super();}
 
     @Override
-    public void readDataChunch(FileChannel fc) throws IOException
-    {
-
-        super.readDataChunch(fc);
+    public void readDataChunk(FileChannel fc) throws IOException {
+        readDataChunkHeader(fc);
 
         ByteBuffer audioData = Utils.readFileDataIntoBufferLE(fc, 4);
         numFrames = Integer.reverseBytes(audioData.getInt());
@@ -33,7 +28,6 @@ public class FrteChunk extends BaseChunk
         rate = Short.reverseBytes(audioData.getShort());
 
         skipToChunkEnd(fc);
-
     }
 
     /**

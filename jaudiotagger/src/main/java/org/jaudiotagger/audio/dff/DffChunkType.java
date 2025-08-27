@@ -23,9 +23,10 @@ public enum DffChunkType {
     FRTE("FRTE"),
     ID3("ID3 "),
     DATA("data"),
-    ;
+    ABSS("ABSS"),
+    LSCO("LSCO");
 
-    private static final Map<String, DffChunkType> CODE_TYPE_MAP = new HashMap<String, DffChunkType>();
+    private static final Map<String, DffChunkType> CODE_TYPE_MAP = new HashMap<>();
     private final String code;
 
     /**

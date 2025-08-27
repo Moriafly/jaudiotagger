@@ -11,21 +11,17 @@ import static java.nio.charset.StandardCharsets.ISO_8859_1;
 /**
  * CMPR Chunk. Retrieve compression.
  */
-public class CmprChunk extends BaseChunk
-{
+public class CmprChunk extends BaseChunk {
     private String compression;
     private String description;
 
-    public CmprChunk(ByteBuffer dataBuffer)
-    {
-        super(dataBuffer);
+    public CmprChunk() {
+        super();
     }
 
     @Override
-    public void readDataChunch(FileChannel fc) throws IOException
-    {
-
-        super.readDataChunch(fc);
+    public void readDataChunk(FileChannel fc) throws IOException {
+        readDataChunkHeader(fc);
 
         ByteBuffer audioData = Utils.readFileDataIntoBufferLE(fc, 4);
         compression = Utils.readFourBytesAsChars(audioData);
@@ -49,24 +45,14 @@ public class CmprChunk extends BaseChunk
     /**
      * @return the compression
      */
-    public String getCompression()
-    {
+    public String getCompression() {
         return compression;
     }
 
     /**
      * @return the description
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
-
-    @Override
-    public String toString()
-    {
-        return DffChunkType.CMPR.getCode();
-    }
-
-
 }

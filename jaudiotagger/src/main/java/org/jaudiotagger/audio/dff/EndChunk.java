@@ -11,20 +11,17 @@ public class EndChunk extends BaseChunk
 {
     private Long dataEnd;
 
-    public EndChunk(ByteBuffer dataBuffer)
+    public EndChunk()
     {
-        super(dataBuffer);
+        super();
     }
 
     @Override
-    public void readDataChunch(FileChannel fc) throws IOException
+    public void readDataChunk(FileChannel fc) throws IOException
     {
-
-        super.readDataChunch(fc);
+        readDataChunkHeader(fc);
         dataEnd = this.getChunkEnd();
-
-        //skipToChunkEnd(fc);
-
+        skipToChunkEnd(fc);
     }
 
     /**
@@ -42,12 +39,4 @@ public class EndChunk extends BaseChunk
     {
         return dataEnd;
     }
-
-    @Override
-    public String toString()
-    {
-        return DffChunkType.END.getCode() + " (END)";
-    }
-
-
 }

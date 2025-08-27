@@ -13,22 +13,16 @@ public class FsChunk extends BaseChunk
 {
     private int sampleRate;
 
-    public FsChunk(ByteBuffer dataBuffer)
-    {
-        super(dataBuffer);
-    }
+    public FsChunk() {super();}
 
     @Override
-    public void readDataChunch(FileChannel fc) throws IOException
-    {
-
-        super.readDataChunch(fc);
+    public void readDataChunk(FileChannel fc) throws IOException {
+        readDataChunkHeader(fc);
 
         ByteBuffer audioData = Utils.readFileDataIntoBufferLE(fc, 4);
         sampleRate = Integer.reverseBytes(audioData.getInt());
 
         skipToChunkEnd(fc);
-
     }
 
     /**
@@ -38,12 +32,4 @@ public class FsChunk extends BaseChunk
     {
         return sampleRate;
     }
-
-    @Override
-    public String toString()
-    {
-        return DffChunkType.FS.getCode();
-    }
-
-
 }

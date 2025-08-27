@@ -47,15 +47,12 @@ public class DffFileReader extends AudioFileReader2 {
                     throw new CannotReadException(file + " Not a valid dff file. Missing 'SND '  after 'PROP' ");
                 }
 
-                BaseChunk chunk = null;
+                BaseChunk chunk;
                 FsChunk fs = null;
                 ChnlChunk chnl = null;
-                CmprChunk cmpr = null;
-                DitiChunk diti = null;
-                EndChunk end = null;
+                EndChunk end;
                 DstChunk dst = null;
                 FrteChunk frte = null;
-                Id3Chunk id3 = null;
 
                 for (; ; ) {
                     try {
@@ -66,29 +63,21 @@ public class DffFileReader extends AudioFileReader2 {
 
                     if (chunk instanceof FsChunk) {
                         fs = (FsChunk) chunk;
-                        fs.readDataChunch(fc);
-
+                        fs.readDataChunk(fc);
                     } else if (chunk instanceof ChnlChunk) {
                         chnl = (ChnlChunk) chunk;
-                        chnl.readDataChunch(fc);
-
+                        chnl.readDataChunk(fc);
                     } else if (chunk instanceof CmprChunk) {
-                        cmpr = (CmprChunk) chunk;
-                        cmpr.readDataChunch(fc);
-
-                    } else if (chunk instanceof DitiChunk) {
-                        diti = (DitiChunk) chunk;
-                        diti.readDataChunch(fc);
-
+                        chunk.readDataChunk(fc);
                     } else if (chunk instanceof EndChunk) {
                         end = (EndChunk) chunk;
-                        end.readDataChunch(fc);
+                        end.readDataChunk(fc);
 
-                        break; //no more data after the end.
-
+                        // no more data after the end
+                        break;
                     } else if (chunk instanceof DstChunk) {
                         dst = (DstChunk) chunk;
-                        dst.readDataChunch(fc);
+                        dst.readDataChunk(fc);
 
                         try {
                             frte = (FrteChunk) BaseChunk.readIdChunk(Utils.readFileDataIntoBufferLE(fc, BaseChunk.ID_LENGTH));
@@ -97,11 +86,11 @@ public class DffFileReader extends AudioFileReader2 {
                         }
 
                         if (frte != null) {
-                            frte.readDataChunch(fc);
+                            frte.readDataChunk(fc);
                         }
-                    } else if (chunk instanceof Id3Chunk) {
-                        id3 = (Id3Chunk) chunk;
-                        id3.readDataChunch(fc);
+                    } else {
+                        // BaseChunk
+                        chunk.readDataChunk(fc);
                     }
                 } //end for
 

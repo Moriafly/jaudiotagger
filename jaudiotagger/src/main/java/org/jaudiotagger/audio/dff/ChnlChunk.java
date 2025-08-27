@@ -14,16 +14,15 @@ public class ChnlChunk extends BaseChunk
     private short numChannels;
     String IDs[];
 
-    public ChnlChunk(ByteBuffer dataBuffer)
+    public ChnlChunk()
     {
-        super(dataBuffer);
+        super();
     }
 
     @Override
-    public void readDataChunch(FileChannel fc) throws IOException
+    public void readDataChunk(FileChannel fc) throws IOException
     {
-
-        super.readDataChunch(fc);
+        readDataChunkHeader(fc);
 
         ByteBuffer audioData = Utils.readFileDataIntoBufferLE(fc, 2);
         numChannels = Short.reverseBytes(audioData.getShort());
@@ -50,12 +49,4 @@ public class ChnlChunk extends BaseChunk
     {
         return numChannels;
     }
-
-    @Override
-    public String toString()
-    {
-        return DffChunkType.CHNL.getCode();
-    }
-
-
 }
