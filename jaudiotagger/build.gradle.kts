@@ -1,7 +1,11 @@
 plugins {
     id("java-library")
     alias(libs.plugins.kotlin.jvm)
+    id("maven-publish")
 }
+
+group = "com.moriafly.jaudiotagger"
+version = "4.0.0-dev01"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
