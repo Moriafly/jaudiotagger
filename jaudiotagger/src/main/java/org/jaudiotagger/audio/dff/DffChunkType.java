@@ -8,8 +8,8 @@ import java.util.Map;
  *
  * @see org.jaudiotagger.audio.iff.Chunk
  */
-public enum DffChunkType
-{
+@SuppressWarnings("SpellCheckingInspection")
+public enum DffChunkType {
     FRM8("FRM8"),
     DSD("DSD "),
     PROP("PROP"),
@@ -22,16 +22,16 @@ public enum DffChunkType
     DST("DST "),
     FRTE("FRTE"),
     ID3("ID3 "),
-    DATA("data"),;
+    DATA("data"),
+    ;
 
     private static final Map<String, DffChunkType> CODE_TYPE_MAP = new HashMap<String, DffChunkType>();
-    private String code;
+    private final String code;
 
     /**
      * @param code 4 char string
      */
-    DffChunkType(final String code)
-    {
+    DffChunkType(final String code) {
         this.code = code;
     }
 
@@ -41,12 +41,9 @@ public enum DffChunkType
      * @param code chunk id
      * @return chunk type or {@code null} if not registered
      */
-    public synchronized static DffChunkType get(final String code)
-    {
-        if (CODE_TYPE_MAP.isEmpty())
-        {
-            for (final DffChunkType type : values())
-            {
+    public synchronized static DffChunkType get(final String code) {
+        if (CODE_TYPE_MAP.isEmpty()) {
+            for (final DffChunkType type : values()) {
                 CODE_TYPE_MAP.put(type.getCode(), type);
             }
         }
@@ -58,8 +55,7 @@ public enum DffChunkType
      *
      * @return 4 char type code, e.g. "SSND" for the sound chunk.
      */
-    public String getCode()
-    {
+    public String getCode() {
         return code;
     }
 }

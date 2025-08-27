@@ -61,7 +61,7 @@ public class DffFileReader extends AudioFileReader2 {
                     try {
                         chunk = BaseChunk.readIdChunk(Utils.readFileDataIntoBufferLE(fc, BaseChunk.ID_LENGTH));
                     } catch (InvalidChunkException ex) {
-                        continue;
+                        throw new CannotReadException(ex);
                     }
 
                     if (chunk instanceof FsChunk) {
