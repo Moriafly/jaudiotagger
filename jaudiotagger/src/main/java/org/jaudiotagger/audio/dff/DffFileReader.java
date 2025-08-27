@@ -59,10 +59,8 @@ public class DffFileReader extends AudioFileReader2 {
 
                 for (; ; ) {
                     try {
-                        chunk = BaseChunk.readIdChunk(Utils.readFileDataIntoBufferLE(fc, BaseChunk.ID_LENGHT));
-
+                        chunk = BaseChunk.readIdChunk(Utils.readFileDataIntoBufferLE(fc, BaseChunk.ID_LENGTH));
                     } catch (InvalidChunkException ex) {
-
                         continue;
                     }
 
@@ -93,27 +91,18 @@ public class DffFileReader extends AudioFileReader2 {
                         dst.readDataChunch(fc);
 
                         try {
-
-                            frte = (FrteChunk) BaseChunk.readIdChunk(Utils.readFileDataIntoBufferLE(fc, BaseChunk.ID_LENGHT));
-
+                            frte = (FrteChunk) BaseChunk.readIdChunk(Utils.readFileDataIntoBufferLE(fc, BaseChunk.ID_LENGTH));
                         } catch (InvalidChunkException ex) {
-
                             throw new CannotReadException(file + "Not a valid dft file. Missing 'FRTE' chunk");
                         }
 
                         if (frte != null) {
-
                             frte.readDataChunch(fc);
-
                         }
-
                     } else if (chunk instanceof Id3Chunk) {
                         id3 = (Id3Chunk) chunk;
                         id3.readDataChunch(fc);
-
-
                     }
-
                 } //end for
 
                 if (chnl == null) {
