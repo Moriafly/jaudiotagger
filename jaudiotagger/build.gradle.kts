@@ -21,3 +21,11 @@ kotlin {
 dependencies {
     testImplementation(libs.kotlin.test)
 }
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+        }
+    }
+}
