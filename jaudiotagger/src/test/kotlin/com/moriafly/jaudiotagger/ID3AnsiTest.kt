@@ -16,7 +16,5 @@ class ID3AnsiTest {
 
         val title = tag.getFirst(FieldKey.TITLE)
         println(title)
-
-        AudioFileIO.write(audioFile)
     }
 }
