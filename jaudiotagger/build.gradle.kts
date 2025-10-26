@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.moriafly.jaudiotagger"
-version = "4.0.0-dev01"
+version = "0.0.0-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11

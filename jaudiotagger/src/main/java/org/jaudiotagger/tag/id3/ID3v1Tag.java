@@ -22,6 +22,8 @@
  */
 package org.jaudiotagger.tag.id3;
 
+import com.moriafly.jaudiotagger.JaudiotaggerFlags;
+
 import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.logging.ErrorMessage;
 import org.jaudiotagger.tag.*;
@@ -776,7 +778,6 @@ public class ID3v1Tag extends AbstractID3v1Tag implements Tag {
         return new ID3v1Iterator(this);
     }
 
-
     /**
      * @param byteBuffer
      * @throws TagNotFoundException
@@ -786,8 +787,7 @@ public class ID3v1Tag extends AbstractID3v1Tag implements Tag {
             throw new TagNotFoundException(getLoggingFilename() + ":" + "ID3v1 tag not found");
         }
 
-
-        Charset charset = StandardCharsets.ISO_8859_1;
+        Charset charset = JaudiotaggerFlags.id3v1DecodingCharset;
 
         logger.finer(getLoggingFilename() + ":" + "Reading v1 tag");
         // Do single file read of data to cut down on file reads
@@ -842,6 +842,8 @@ public class ID3v1Tag extends AbstractID3v1Tag implements Tag {
 
     /**
      * Write this tag to the file, replacing any tag previously existing
+     *
+     * TODO Support charset encoding
      *
      * @param file
      * @throws IOException
