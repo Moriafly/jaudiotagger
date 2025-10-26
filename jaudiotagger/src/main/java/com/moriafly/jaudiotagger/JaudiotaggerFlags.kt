@@ -26,7 +26,7 @@ import java.nio.charset.StandardCharsets
 @UnstableJaudiotaggerApi
 object JaudiotaggerFlags {
     /**
-     * ID3V1 decoding charset.
+     * ID3v1 decoding charset.
      */
     @Suppress("MutableBareField")
     @JvmField
