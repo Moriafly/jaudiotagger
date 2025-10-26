@@ -491,8 +491,7 @@ public class ID3v1Tag extends AbstractID3v1Tag implements Tag
      *
      * @return Title
      */
-    public String getFirstTitle()
-    {
+    public String getFirstTitle() {
         return title;
     }
 
@@ -920,30 +919,32 @@ public class ID3v1Tag extends AbstractID3v1Tag implements Tag
      * @param byteBuffer
      * @throws TagNotFoundException
      */
-    public void read(ByteBuffer byteBuffer) throws TagNotFoundException
-    {
-        if (!seek(byteBuffer))
-        {
+    public void read(ByteBuffer byteBuffer) throws TagNotFoundException {
+        if (!seek(byteBuffer)) {
             throw new TagNotFoundException(getLoggingFilename() + ":" + "ID3v1 tag not found");
         }
+
+
+        Charset charset = StandardCharsets.ISO_8859_1;
+
         logger.finer(getLoggingFilename() + ":" + "Reading v1 tag");
-        //Do single file read of data to cut down on file reads
+        // Do single file read of data to cut down on file reads
         byte[] dataBuffer = new byte[TAG_LENGTH];
         byteBuffer.position(0);
         byteBuffer.get(dataBuffer, 0, TAG_LENGTH);
-        title = new String(dataBuffer, FIELD_TITLE_POS, FIELD_TITLE_LENGTH, StandardCharsets.ISO_8859_1).trim();
+        title = new String(dataBuffer, FIELD_TITLE_POS, FIELD_TITLE_LENGTH, charset).trim();
         Matcher m = AbstractID3v1Tag.endofStringPattern.matcher(title);
         if (m.find())
         {
             title = title.substring(0, m.start());
         }
-        artist = new String(dataBuffer, FIELD_ARTIST_POS, FIELD_ARTIST_LENGTH, StandardCharsets.ISO_8859_1).trim();
+        artist = new String(dataBuffer, FIELD_ARTIST_POS, FIELD_ARTIST_LENGTH, charset).trim();
         m = AbstractID3v1Tag.endofStringPattern.matcher(artist);
         if (m.find())
         {
             artist = artist.substring(0, m.start());
         }
-        album = new String(dataBuffer, FIELD_ALBUM_POS, FIELD_ALBUM_LENGTH, StandardCharsets.ISO_8859_1).trim();
+        album = new String(dataBuffer, FIELD_ALBUM_POS, FIELD_ALBUM_LENGTH, charset).trim();
         m = AbstractID3v1Tag.endofStringPattern.matcher(album);
         logger.finest(getLoggingFilename() + ":" + "Orig Album is:" + comment + ":");
         if (m.find())
@@ -951,17 +952,16 @@ public class ID3v1Tag extends AbstractID3v1Tag implements Tag
             album = album.substring(0, m.start());
             logger.finest(getLoggingFilename() + ":" + "Album is:" + album + ":");
         }
-        year = new String(dataBuffer, FIELD_YEAR_POS, FIELD_YEAR_LENGTH, StandardCharsets.ISO_8859_1).trim();
+        year = new String(dataBuffer, FIELD_YEAR_POS, FIELD_YEAR_LENGTH, charset).trim();
         m = AbstractID3v1Tag.endofStringPattern.matcher(year);
-        if (m.find())
-        {
+        if (m.find()) {
             year = year.substring(0, m.start());
         }
-        comment = new String(dataBuffer, FIELD_COMMENT_POS, FIELD_COMMENT_LENGTH, StandardCharsets.ISO_8859_1).trim();
+        comment = new String(dataBuffer, FIELD_COMMENT_POS, FIELD_COMMENT_LENGTH, charset).trim();
         m = AbstractID3v1Tag.endofStringPattern.matcher(comment);
+
         logger.finest(getLoggingFilename() + ":" + "Orig Comment is:" + comment + ":");
-        if (m.find())
-        {
+        if (m.find()) {
             comment = comment.substring(0, m.start());
             logger.finest(getLoggingFilename() + ":" + "Comment is:" + comment + ":");
         }

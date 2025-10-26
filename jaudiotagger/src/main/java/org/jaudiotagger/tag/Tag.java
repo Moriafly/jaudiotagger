@@ -50,7 +50,6 @@ import java.util.List;
  * @author Paul Taylor
  */
 public interface Tag {
-
     /**
      * Create the field based on the generic key and set it in the tag
      *
@@ -87,7 +86,7 @@ public interface Tag {
      * @param key
      * @throws KeyNotFoundException
      */
-    void deleteField(String key)throws KeyNotFoundException;
+    void deleteField(String key) throws KeyNotFoundException;
 
     /**
      * Returns a {@linkplain List list} of {@link TagField} objects whose &quot;{@linkplain TagField#getId() id}&quot;
@@ -206,7 +205,6 @@ public interface Tag {
      */
     boolean isEmpty();
 
-
     //TODO, do we need this
     String toString();
 
@@ -221,7 +219,6 @@ public interface Tag {
      */
     int getFieldCount();
 
-
     /**
      * Return the number of fields taking multiple value fields into consideration
      *
@@ -233,10 +230,8 @@ public interface Tag {
      */
     int getFieldCountIncludingSubValues();
 
-
     //TODO is this a special field?
     boolean setEncoding(Charset enc) throws FieldDataInvalidException;
-
 
     /**
      * @return a list of all artwork in this file using the format independent Artwork class
@@ -257,7 +252,6 @@ public interface Tag {
      * @throws KeyNotFoundException
      */
     void deleteArtworkField() throws KeyNotFoundException;
-
 
     /**
      * Create artwork field based on the data in artwork
@@ -334,5 +328,4 @@ public interface Tag {
      * @throws FieldDataInvalidException
      */
     TagField createCompilationField(boolean value) throws KeyNotFoundException, FieldDataInvalidException;
-
 }
