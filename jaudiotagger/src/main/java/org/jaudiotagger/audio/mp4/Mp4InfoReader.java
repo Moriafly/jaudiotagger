@@ -275,6 +275,20 @@ public class Mp4InfoReader {
                 info.setAudioDataLength(fc.size() - stco.getFirstOffSet());
             }
 
+            // VBR 比特率为 0 的问题
+            // 如果从 esds 读取的比特率为 0，且有了时长和数据长度，则手动计算
+            if (info.getBitRateAsNumber() <= 0 &&
+                    info.getPreciseTrackLength() > 0 &&
+                    info.getAudioDataLength() > 0
+            ) {
+                // (字节数 * 8) / (秒数 * 1000) = kbps
+                long bits = info.getAudioDataLength() * 8;
+                double seconds = info.getPreciseTrackLength();
+                int calculatedBitRate = (int) (bits / (seconds * 1000));
+
+                info.setBitRate(calculatedBitRate);
+            }
+
             // Set default channels if couldn't calculate it
             if (info.getChannelNumber() == -1) {
                 info.setChannelNumber(2);
