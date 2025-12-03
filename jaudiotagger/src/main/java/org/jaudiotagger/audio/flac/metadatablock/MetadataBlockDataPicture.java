@@ -17,15 +17,15 @@ import java.util.logging.Logger;
 
 /**
  * Picture Block
- *
- *
+ * <p>
+ * <p>
  * pThis block is for storing pictures associated with the file, most commonly cover art from CDs.
  * There may be more than one PICTURE block in a file. The picture format is similar to the APIC frame in ID3v2.
  * The PICTURE block has a type, MIME type, and UTF-8 description like ID3v2, and supports external linking via URL
  * (though this is discouraged). The differences are that there is no uniqueness constraint on the description field,
  * and the MIME type is mandatory. The FLAC PICTURE block also includes the resolution, color depth, and palette size
  * so that the client can search for a suitable picture without having to scan them all
- *
+ * <p>
  * Format:
  * Size in bits Info
  * 32 The picture type according to the ID3v2 APIC frame: (There may only be one each of picture type 1 and 2 in a file)
@@ -40,8 +40,7 @@ import java.util.logging.Logger;
  * 32 	The length of the picture data in bytes.
  * n*8 	The binary picture data.
  */
-public class MetadataBlockDataPicture implements MetadataBlockData, TagField
-{
+public class MetadataBlockDataPicture implements MetadataBlockData, TagField {
     public static final String IMAGE_IS_URL = "-->";
 
     private int pictureType;
@@ -49,7 +48,7 @@ public class MetadataBlockDataPicture implements MetadataBlockData, TagField
     private int descriptionSize;
 
 
-    private String mimeType ="";
+    private String mimeType = "";
     private String description = "";
     private int width;
     private int height;
@@ -61,27 +60,23 @@ public class MetadataBlockDataPicture implements MetadataBlockData, TagField
     // Logger Object
     public static Logger logger = Logger.getLogger("org.jaudiotagger.audio.flac.MetadataBlockDataPicture");
 
-    private void initFromByteBuffer(ByteBuffer rawdata) throws IOException, InvalidFrameException
-    {
+    private void initFromByteBuffer(ByteBuffer rawdata) throws IOException, InvalidFrameException {
         //Picture Type
         pictureType = rawdata.getInt();
-        if (pictureType >= PictureTypes.getInstanceOf().getSize())
-        {
+        if (pictureType >= PictureTypes.getInstanceOf().getSize()) {
             throw new InvalidFrameException("PictureType was:" + pictureType + "but the maximum allowed is " + (PictureTypes.getInstanceOf().getSize() - 1));
         }
 
         //MimeType
         mimeTypeSize = rawdata.getInt();
-        if(mimeTypeSize < 0)
-        {
+        if (mimeTypeSize < 0) {
             throw new InvalidFrameException("PictureType mimeType size was invalid:" + mimeTypeSize);
         }
         mimeType = getString(rawdata, mimeTypeSize, StandardCharsets.ISO_8859_1.name());
 
         //Description
         descriptionSize = rawdata.getInt();
-        if(descriptionSize < 0)
-        {
+        if (descriptionSize < 0) {
             throw new InvalidFrameException("PictureType descriptionSize size was invalid:" + mimeTypeSize);
         }
         description = getString(rawdata, descriptionSize, StandardCharsets.UTF_8.name());
@@ -98,12 +93,11 @@ public class MetadataBlockDataPicture implements MetadataBlockData, TagField
         //Indexed Colour Count
         indexedColouredCount = rawdata.getInt();
 
-        lengthOfPictureInBytes =  rawdata.getInt();
+        lengthOfPictureInBytes = rawdata.getInt();
 
         //ImageData
-        if(lengthOfPictureInBytes > rawdata.remaining())
-        {
-            throw new InvalidFrameException("PictureType Size was:" + lengthOfPictureInBytes + " but remaining bytes size " +rawdata.remaining());
+        if (lengthOfPictureInBytes > rawdata.remaining()) {
+            throw new InvalidFrameException("PictureType Size was:" + lengthOfPictureInBytes + " but remaining bytes size " + rawdata.remaining());
         }
         imageData = new byte[lengthOfPictureInBytes];
         rawdata.get(imageData);
@@ -117,8 +111,7 @@ public class MetadataBlockDataPicture implements MetadataBlockData, TagField
      * @throws IOException
      * @throws InvalidFrameException
      */
-    public MetadataBlockDataPicture(ByteBuffer rawdata) throws IOException, InvalidFrameException
-    {
+    public MetadataBlockDataPicture(ByteBuffer rawdata) throws IOException, InvalidFrameException {
         initFromByteBuffer(rawdata);
     }
 
@@ -130,17 +123,14 @@ public class MetadataBlockDataPicture implements MetadataBlockData, TagField
      * @throws java.io.IOException
      * @throws org.jaudiotagger.tag.InvalidFrameException
      */
-    public MetadataBlockDataPicture(MetadataBlockHeader header, FileChannel fc ) throws IOException, InvalidFrameException
-    {
-        if (header.getDataLength()==0)
-        {
+    public MetadataBlockDataPicture(MetadataBlockHeader header, FileChannel fc) throws IOException, InvalidFrameException {
+        if (header.getDataLength() == 0) {
             throw new IOException("MetadataBlockDataPicture HeaderDataSize is zero");
         }
 
         ByteBuffer rawdata = ByteBuffer.allocate(header.getDataLength());
         int bytesRead = fc.read(rawdata);
-        if (bytesRead < header.getDataLength())
-        {
+        if (bytesRead < header.getDataLength()) {
             throw new IOException("Unable to read required number of databytes read:" + bytesRead + ":required:" + header.getDataLength());
         }
 
@@ -162,11 +152,9 @@ public class MetadataBlockDataPicture implements MetadataBlockData, TagField
      * @param colourDepth
      * @param indexedColouredCount
      */
-    public MetadataBlockDataPicture(byte[] imageData, int pictureType, String mimeType, String description, int width, int height, int colourDepth, int indexedColouredCount)
-    {
+    public MetadataBlockDataPicture(byte[] imageData, int pictureType, String mimeType, String description, int width, int height, int colourDepth, int indexedColouredCount) {
         this.pictureType = pictureType;
-        if(mimeType!=null)
-        {
+        if (mimeType != null) {
             this.mimeType = mimeType;
         }
         this.description = description;
@@ -177,17 +165,14 @@ public class MetadataBlockDataPicture implements MetadataBlockData, TagField
         this.imageData = imageData;
     }
 
-    private String getString(ByteBuffer rawdata, int length, String charset) throws IOException
-    {
+    private String getString(ByteBuffer rawdata, int length, String charset) throws IOException {
         byte[] tempbuffer = new byte[length];
         rawdata.get(tempbuffer);
         return new String(tempbuffer, charset);
     }
 
-    public ByteBuffer getBytes()
-    {
-        try
-        {
+    public ByteBuffer getBytes() {
+        try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             baos.write(Utils.getSizeBEInt32(pictureType));
             baos.write(Utils.getSizeBEInt32(mimeType.getBytes(StandardCharsets.ISO_8859_1).length));
@@ -202,91 +187,74 @@ public class MetadataBlockDataPicture implements MetadataBlockData, TagField
             baos.write(imageData);
             return ByteBuffer.wrap(baos.toByteArray());
 
-        }
-        catch (IOException ioe)
-        {
+        } catch (IOException ioe) {
             throw new RuntimeException(ioe.getMessage());
         }
     }
 
-    public int getLength()
-    {
+    public int getLength() {
         return getBytes().limit();
     }
 
-    public int getPictureType()
-    {
+    public int getPictureType() {
         return pictureType;
     }
 
-    public String getMimeType()
-    {
+    public String getMimeType() {
         return mimeType;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public int getWidth()
-    {
+    public int getWidth() {
         return width;
     }
 
-    public int getHeight()
-    {
+    public int getHeight() {
         return height;
     }
 
-    public int getColourDepth()
-    {
+    public int getColourDepth() {
         return colourDepth;
     }
 
-    public int getIndexedColourCount()
-    {
+    public int getIndexedColourCount() {
         return indexedColouredCount;
     }
 
-    public byte[] getImageData()
-    {
+    public byte[] getImageData() {
         return imageData;
     }
 
     /**
      * @return true if imagedata  is held as a url rather than actually being imagedata
      */
-    public boolean isImageUrl()
-    {
+    public boolean isImageUrl() {
         return getMimeType().equals(IMAGE_IS_URL);
     }
 
     /**
      * @return the image url if there is otherwise return an empty String
      */
-    public String getImageUrl()
-    {
-        if (isImageUrl())
-        {
+    public String getImageUrl() {
+        if (isImageUrl()) {
             return new String(getImageData(), 0, getImageData().length, StandardCharsets.ISO_8859_1);
-        }
-        else
-        {
+        } else {
             return "";
         }
     }
 
-    public String toString()
-    {
+    public String toString() {
         return "\t\t" + PictureTypes.getInstanceOf().getValueForId(pictureType) + "\n"
-                + "\t\tmimeType:size:" +mimeTypeSize + ":" + mimeType + "\n"
-                + "\t\tdescription:size:" +descriptionSize + ":" + description + "\n"
-                + "\t\twidth:" + width +"\n"
-                + "\t\theight:"+ height +"\n"
-                + "\t\tcolourdepth:" + colourDepth+"\n"
-                + "\t\tindexedColourCount:" + indexedColouredCount+"\n"
-                + "\t\timage size in bytes:" + lengthOfPictureInBytes + "/" + imageData.length+"\n";
+                + "\t\tmimeType:size:" + mimeTypeSize + ":" + mimeType + "\n"
+                + "\t\tdescription:size:" + descriptionSize + ":" + description + "\n"
+                + "\t\twidth:" + width + "\n"
+                + "\t\theight:" + height + "\n"
+                + "\t\tcolourdepth:" + colourDepth + "\n"
+                + "\t\tindexedColourCount:" + indexedColouredCount + "\n"
+                + "\t\timage size in bytes:" + lengthOfPictureInBytes + "/" + imageData.length + "\n";
     }
 
     /**
@@ -294,8 +262,7 @@ public class MetadataBlockDataPicture implements MetadataBlockData, TagField
      *
      * @param field The field containing the data to be taken.
      */
-    public void copyContent(TagField field)
-    {
+    public void copyContent(TagField field) {
         throw new UnsupportedOperationException();
     }
 
@@ -307,8 +274,7 @@ public class MetadataBlockDataPicture implements MetadataBlockData, TagField
      *
      * @return Unique identifier for the fields type. (title, artist...)
      */
-    public String getId()
-    {
+    public String getId() {
         return FieldKey.COVER_ART.name();
     }
 
@@ -317,14 +283,12 @@ public class MetadataBlockDataPicture implements MetadataBlockData, TagField
      * order to be directly written to the file.<br>
      *
      * @return Binary data representing the current tag field.<br>
-     * @throws java.io.UnsupportedEncodingException
-     *          Most tag data represents text. In some cases the underlying
-     *          implementation will need to convertMetadata the text data in java to
-     *          a specific charset encoding. In these cases an
-     *          {@link java.io.UnsupportedEncodingException} may occur.
+     * @throws java.io.UnsupportedEncodingException Most tag data represents text. In some cases the underlying
+     *                                              implementation will need to convertMetadata the text data in java to
+     *                                              a specific charset encoding. In these cases an
+     *                                              {@link java.io.UnsupportedEncodingException} may occur.
      */
-    public byte[] getRawContent() throws UnsupportedEncodingException
-    {
+    public byte[] getRawContent() throws UnsupportedEncodingException {
         return getBytes().array();
     }
 
@@ -335,33 +299,31 @@ public class MetadataBlockDataPicture implements MetadataBlockData, TagField
      * readable if this method returns <code>false</code>.
      *
      * @return <code>true</code> if field represents binary data (not human
-     *         readable).
+     * readable).
      */
-    public boolean isBinary()
-    {
+    public boolean isBinary() {
         return true;
     }
 
     /**
      * This method will set the field to represent binary data.<br>
-     *
+     * <p>
      * Some implementations may support conversions.<br>
      * As of now (Octobre 2005) there is no implementation really using this
      * method to perform useful operations.
      *
      * @param b <code>true</code>, if the field contains binary data.
      * @deprecated As for now is of no use. Implementations should use another
-     *             way of setting this property.
+     * way of setting this property.
      */
     @Deprecated
-    public void isBinary(boolean b)
-    {
+    public void isBinary(boolean b) {
         //Do nothing, always true
     }
 
     /**
      * Identifies a field to be of common use.<br>
-     *
+     * <p>
      * Some software may differ between common and not common fields. A common
      * one is for sure the title field. A web link may not be of common use for
      * tagging. However some file formats, or future development of users
@@ -369,8 +331,7 @@ public class MetadataBlockDataPicture implements MetadataBlockData, TagField
      *
      * @return <code>true</code> if the field is of common use.
      */
-    public boolean isCommon()
-    {
+    public boolean isCommon() {
         return true;
     }
 
@@ -379,8 +340,7 @@ public class MetadataBlockDataPicture implements MetadataBlockData, TagField
      *
      * @return <code>true</code> if no data is stored (or empty String).
      */
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return false;
     }
 

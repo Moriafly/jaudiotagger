@@ -9,13 +9,14 @@ import java.nio.channels.FileChannel;
 /**
  * FS Chunk. Retrive samplerate.
  */
-public class FrteChunk extends BaseChunk
-{
+public class FrteChunk extends BaseChunk {
 
     private int numFrames;
     private Short rate;
 
-    public FrteChunk() {super();}
+    public FrteChunk() {
+        super();
+    }
 
     @Override
     public void readDataChunk(FileChannel fc) throws IOException {
@@ -33,22 +34,19 @@ public class FrteChunk extends BaseChunk
     /**
      * @return the numFrames
      */
-    public int getNumFrames()
-    {
+    public int getNumFrames() {
         return numFrames;
     }
 
     /**
      * @return the rate
      */
-    public Short getRate()
-    {
+    public Short getRate() {
         return rate;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return DffChunkType.FRTE.getCode();
     }
 }

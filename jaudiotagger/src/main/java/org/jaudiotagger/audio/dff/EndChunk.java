@@ -7,18 +7,15 @@ import java.nio.channels.FileChannel;
 /**
  * DSD Chunk
  */
-public class EndChunk extends BaseChunk
-{
+public class EndChunk extends BaseChunk {
     private Long dataEnd;
 
-    public EndChunk()
-    {
+    public EndChunk() {
         super();
     }
 
     @Override
-    public void readDataChunk(FileChannel fc) throws IOException
-    {
+    public void readDataChunk(FileChannel fc) throws IOException {
         readDataChunkHeader(fc);
         dataEnd = this.getChunkEnd();
         skipToChunkEnd(fc);
@@ -27,16 +24,14 @@ public class EndChunk extends BaseChunk
     /**
      * @return the point where data starts
      */
-    public Long getDataStart()
-    {
+    public Long getDataStart() {
         return this.getChunkStart();
     }
 
     /**
      * @return the dataEnd (should be the end of file)
      */
-    public Long getDataEnd()
-    {
+    public Long getDataEnd() {
         return dataEnd;
     }
 }

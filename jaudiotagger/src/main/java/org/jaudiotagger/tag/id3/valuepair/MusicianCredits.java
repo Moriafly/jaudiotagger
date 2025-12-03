@@ -7,12 +7,10 @@ import java.util.Set;
  * List of musician credit keys that can be used when converting from IPLS to TIPL/TMCL to
  * signify pair should be allocated to TMCL
  */
-public class MusicianCredits
-{
+public class MusicianCredits {
     private static Set<String> musicianCredits = new HashSet<>();
 
-    static
-    {
+    static {
         musicianCredits.add("12 string guitar");
         musicianCredits.add("17-string koto");
         musicianCredits.add("accompaniment");
@@ -809,12 +807,9 @@ public class MusicianCredits
         musicianCredits.add("zurna");
     }
 
-    public static boolean isKey(String key)
-    {
-        for(String next:musicianCredits)
-        {
-            if(key.toLowerCase().trim().startsWith(next))
-            {
+    public static boolean isKey(String key) {
+        for (String next : musicianCredits) {
+            if (key.toLowerCase().trim().startsWith(next)) {
                 return true;
             }
         }

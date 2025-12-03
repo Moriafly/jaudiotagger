@@ -9,8 +9,7 @@ import java.nio.ByteBuffer;
 /**
  * This box is used within ---- boxes to hold the issuer
  */
-public class Mp4MeanBox extends AbstractMp4Box
-{
+public class Mp4MeanBox extends AbstractMp4Box {
     public static final String IDENTIFIER = "mean";
 
     private String issuer;
@@ -24,13 +23,11 @@ public class Mp4MeanBox extends AbstractMp4Box
      * @param header     parentHeader info
      * @param dataBuffer data of box (doesnt include parentHeader data)
      */
-    public Mp4MeanBox(Mp4BoxHeader header, ByteBuffer dataBuffer)
-    {
+    public Mp4MeanBox(Mp4BoxHeader header, ByteBuffer dataBuffer) {
         this.header = header;
 
         //Double check
-        if (!header.getId().equals(IDENTIFIER))
-        {
+        if (!header.getId().equals(IDENTIFIER)) {
             throw new RuntimeException("Unable to process data box because identifier is:" + header.getId());
         }
 
@@ -42,8 +39,7 @@ public class Mp4MeanBox extends AbstractMp4Box
 
     }
 
-    public String getIssuer()
-    {
+    public String getIssuer() {
         return issuer;
     }
 }

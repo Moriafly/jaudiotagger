@@ -15,7 +15,8 @@ public class BaseChunk {
     private Long chunkSize;
     private Long chunkStart;
 
-    protected BaseChunk() {}
+    protected BaseChunk() {
+    }
 
     protected void readDataChunk(FileChannel fc) throws IOException {
         readDataChunkHeader(fc);

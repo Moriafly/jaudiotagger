@@ -4,23 +4,20 @@ package org.jaudiotagger.audio.exceptions;
  * This exception should be thrown idf it appears the file is a video file, jaudiotagger only supports audio
  * files.
  */
-public class CannotReadVideoException extends CannotReadException
-{
+public class CannotReadVideoException extends CannotReadException {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -7185020848474992115L;
+     *
+     */
+    private static final long serialVersionUID = -7185020848474992115L;
 
-	/**
+    /**
      * Creates an instance.
      */
-    public CannotReadVideoException()
-    {
+    public CannotReadVideoException() {
         super();
     }
 
-    public CannotReadVideoException(Throwable ex)
-    {
+    public CannotReadVideoException(Throwable ex) {
         super(ex);
     }
 
@@ -29,8 +26,7 @@ public class CannotReadVideoException extends CannotReadException
      *
      * @param message The message.
      */
-    public CannotReadVideoException(String message)
-    {
+    public CannotReadVideoException(String message) {
         super(message);
     }
 
@@ -40,8 +36,7 @@ public class CannotReadVideoException extends CannotReadException
      * @param message The error message.
      * @param cause   The throwable causing this exception.
      */
-    public CannotReadVideoException(String message, Throwable cause)
-    {
+    public CannotReadVideoException(String message, Throwable cause) {
         super(message, cause);
     }
 }

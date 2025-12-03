@@ -91,7 +91,6 @@ import java.util.logging.Logger;
  */
 @SuppressWarnings("unused")
 public class AudioFileIO {
-
     // Logger
     private static final Logger logger = Logger.getLogger("org.jaudiotagger.audio");
 

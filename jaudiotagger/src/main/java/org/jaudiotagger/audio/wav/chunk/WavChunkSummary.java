@@ -11,8 +11,7 @@ import java.util.logging.Logger;
 /**
  * AIFF Specific methods for ChunkSummarys
  */
-public class WavChunkSummary
-{
+public class WavChunkSummary {
     // Logger Object
     public static Logger logger = Logger.getLogger("org.jaudiotagger.audio.wav.chunk");
 
@@ -22,11 +21,9 @@ public class WavChunkSummary
      * @param tag
      * @return
      */
-    public static long getStartLocationOfFirstMetadataChunk(WavTag tag)
-    {
+    public static long getStartLocationOfFirstMetadataChunk(WavTag tag) {
         //Work out the location of the first metadata tag (could be id3 or LIST tag)
-        if(tag.getMetadataChunkSummaryList().size()>0)
-        {
+        if (tag.getMetadataChunkSummaryList().size() > 0) {
             return tag.getMetadataChunkSummaryList().get(0).getFileStartLocation();
         }
         return -1;
@@ -39,38 +36,30 @@ public class WavChunkSummary
      * @param tag
      * @return
      */
-    public static boolean isOnlyMetadataTagsAfterStartingMetadataTag(WavTag tag)
-    {
+    public static boolean isOnlyMetadataTagsAfterStartingMetadataTag(WavTag tag) {
         long startLocationOfMetadatTag = getStartLocationOfFirstMetadataChunk(tag);
-        if(startLocationOfMetadatTag==-1)
-        {
+        if (startLocationOfMetadatTag == -1) {
             logger.severe("Unable to find any metadata tags !");
             return false;
         }
 
         boolean firstMetadataTag = false;
 
-        for(ChunkSummary cs:tag.getChunkSummaryList())
-        {
+        for (ChunkSummary cs : tag.getChunkSummaryList()) {
             //Once we have found first metadata chunk we check all other chunks afterwards and if they are
             //only metadata chunks we can truncate file at start of this metadata chunk
-            if(firstMetadataTag)
-            {
-                if(
+            if (firstMetadataTag) {
+                if (
                         !cs.getChunkId().equals(WavChunkType.ID3.getCode()) &&
-                        !cs.getChunkId().equals(WavChunkType.ID3_UPPERCASE.getCode()) &&
-                        !cs.getChunkId().equals(WavChunkType.LIST.getCode()) &&
-                        !cs.getChunkId().equals(WavChunkType.INFO.getCode())
-                  )
-                {
+                                !cs.getChunkId().equals(WavChunkType.ID3_UPPERCASE.getCode()) &&
+                                !cs.getChunkId().equals(WavChunkType.LIST.getCode()) &&
+                                !cs.getChunkId().equals(WavChunkType.INFO.getCode())
+                ) {
                     return false;
                 }
-            }
-            else
-            {
+            } else {
                 //Found the first metadata chunk
-                if (cs.getFileStartLocation() == startLocationOfMetadatTag)
-                {
+                if (cs.getFileStartLocation() == startLocationOfMetadatTag) {
                     //Found starting point
                     firstMetadataTag = true;
                 }
@@ -78,8 +67,7 @@ public class WavChunkSummary
         }
 
         //Should always be true but this is to protect against something gone wrong
-        if(firstMetadataTag==true)
-        {
+        if (firstMetadataTag == true) {
             return true;
         }
         return false;
@@ -93,15 +81,12 @@ public class WavChunkSummary
      * @param tag
      * @return
      */
-    public static ChunkSummary getChunkBeforeFirstMetadataTag(WavTag tag)
-    {
+    public static ChunkSummary getChunkBeforeFirstMetadataTag(WavTag tag) {
         long startLocationOfMetadatTag = getStartLocationOfFirstMetadataChunk(tag);
 
-        for(int i=0;i < tag.getChunkSummaryList().size(); i++)
-        {
+        for (int i = 0; i < tag.getChunkSummaryList().size(); i++) {
             ChunkSummary cs = tag.getChunkSummaryList().get(i);
-            if (cs.getFileStartLocation() == startLocationOfMetadatTag)
-            {
+            if (cs.getFileStartLocation() == startLocationOfMetadatTag) {
                 return tag.getChunkSummaryList().get(i - 1);
             }
         }

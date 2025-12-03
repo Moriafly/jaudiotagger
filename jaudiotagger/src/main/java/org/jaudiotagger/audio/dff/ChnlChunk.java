@@ -9,19 +9,16 @@ import java.nio.channels.FileChannel;
 /**
  * CHNL Chunk. Retrive channels info.
  */
-public class ChnlChunk extends BaseChunk
-{
+public class ChnlChunk extends BaseChunk {
     private short numChannels;
     String IDs[];
 
-    public ChnlChunk()
-    {
+    public ChnlChunk() {
         super();
     }
 
     @Override
-    public void readDataChunk(FileChannel fc) throws IOException
-    {
+    public void readDataChunk(FileChannel fc) throws IOException {
         readDataChunkHeader(fc);
 
         ByteBuffer audioData = Utils.readFileDataIntoBufferLE(fc, 2);
@@ -31,8 +28,7 @@ public class ChnlChunk extends BaseChunk
         //System.out.println(" new postion: "+fc.position());
 
         IDs = new String[numChannels];
-        for (int i = 0; i < numChannels; i++)
-        {
+        for (int i = 0; i < numChannels; i++) {
             audioData = Utils.readFileDataIntoBufferLE(fc, 4);
             IDs[i] = Utils.readFourBytesAsChars(audioData);
         }
@@ -45,8 +41,7 @@ public class ChnlChunk extends BaseChunk
     /**
      * @return the sampleRate
      */
-    public Short getNumChannels()
-    {
+    public Short getNumChannels() {
         return numChannels;
     }
 }

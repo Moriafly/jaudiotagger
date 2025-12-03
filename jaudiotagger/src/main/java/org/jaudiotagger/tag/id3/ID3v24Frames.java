@@ -29,8 +29,7 @@ import java.util.Map;
  * @author Paul Taylor
  * @version $Id$
  */
-public class ID3v24Frames extends ID3Frames
-{
+public class ID3v24Frames extends ID3Frames {
     /**
      * Frame IDs beginning with T are text frames, and with W are url frames
      */
@@ -136,22 +135,19 @@ public class ID3v24Frames extends ID3Frames
     /**
      * Maps from ID3 key to Generic key
      */
-    protected EnumMap<ID3v24FieldKey, FieldKey> id3ToTagField = new EnumMap<ID3v24FieldKey,FieldKey>(ID3v24FieldKey.class);
+    protected EnumMap<ID3v24FieldKey, FieldKey> id3ToTagField = new EnumMap<ID3v24FieldKey, FieldKey>(ID3v24FieldKey.class);
 
 
     private static ID3v24Frames id3v24Frames;
 
-    public static ID3v24Frames getInstanceOf()
-    {
-        if (id3v24Frames == null)
-        {
+    public static ID3v24Frames getInstanceOf() {
+        if (id3v24Frames == null) {
             id3v24Frames = new ID3v24Frames();
         }
         return id3v24Frames;
     }
 
-    private ID3v24Frames()
-    {
+    private ID3v24Frames() {
         supportedFrames.add(FRAME_ID_ACCOMPANIMENT);
         supportedFrames.add(FRAME_ID_ALBUM);
         supportedFrames.add(FRAME_ID_ALBUM_SORT_ORDER);
@@ -573,17 +569,14 @@ public class ID3v24Frames extends ID3Frames
         populateId3ToTagField();
     }
 
-    private void populateId3ToTagField()
-    {
-        for(Map.Entry<FieldKey,ID3v24FieldKey> next:tagFieldToId3.entrySet())
-        {
+    private void populateId3ToTagField() {
+        for (Map.Entry<FieldKey, ID3v24FieldKey> next : tagFieldToId3.entrySet()) {
             id3ToTagField.put(next.getValue(), next.getKey());
         }
     }
 
     @Override
-    public void setITunes12_6WorkGroupingMode(final boolean id3v2ITunes12_6Mode)
-    {
+    public void setITunes12_6WorkGroupingMode(final boolean id3v2ITunes12_6Mode) {
         if (id3v2ITunes12_6Mode) {
             tagFieldToId3.put(FieldKey.WORK, ID3v24FieldKey.GROUPING);
             tagFieldToId3.put(FieldKey.GROUPING, ID3v24FieldKey.ITUNES_GROUPING);
@@ -598,18 +591,17 @@ public class ID3v24Frames extends ID3Frames
      * @param genericKey
      * @return id3 key for generic key
      */
-    public ID3v24FieldKey getId3KeyFromGenericKey(FieldKey genericKey)
-    {
+    public ID3v24FieldKey getId3KeyFromGenericKey(FieldKey genericKey) {
         return tagFieldToId3.get(genericKey);
     }
 
     /**
      * Get generic key for ID3 field key
+     *
      * @param fieldKey
      * @return
      */
-    public FieldKey getGenericKeyFromId3(ID3v24FieldKey fieldKey)
-    {
+    public FieldKey getGenericKeyFromId3(ID3v24FieldKey fieldKey) {
         return id3ToTagField.get(fieldKey);
     }
 }

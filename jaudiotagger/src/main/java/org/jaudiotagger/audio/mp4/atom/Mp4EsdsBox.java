@@ -9,14 +9,14 @@ import java.util.Map;
 
 /**
  * EsdsBox ( stream specific description box), usually holds the Bitrate/No of Channels
- *
+ * <p>
  * It contains a number of  (possibly optional?)  sections (section 3 - 6) (containing optional filler) with
  * differeent info in each section.
- *
- *
+ * <p>
+ * <p>
  * - 4 bytes version/flags = 8-bit hex version + 24-bit hex flags
  * (current = 0)
- *
+ * <p>
  * Section 3
  * - 1 byte ES descriptor type tag = 8-bit hex value 0x03
  * - 3 bytes optional extended descriptor type tag string = 3 * 8-bit hex value
@@ -25,7 +25,7 @@ import java.util.Map;
  * - 2 bytes ES ID = 16-bit unsigned value
  * - 1 byte stream priority = 8-bit unsigned value
  * - Defaults to 16 and ranges from 0 through to 31
- *
+ * <p>
  * Section 4
  * - 1 byte decoder config descriptor type tag = 8-bit hex value 0x04
  * - 3 bytes optional extended descriptor type tag string = 3 * 8-bit hex value
@@ -43,7 +43,7 @@ import java.util.Map;
  * - 3 bytes buffer size = 24-bit unsigned value
  * - 4 bytes maximum bit rate = 32-bit unsigned value
  * - 4 bytes average bit rate = 32-bit unsigned value
- *
+ * <p>
  * Section 5
  * - 1 byte decoder specific descriptor type tag 8-bit hex value 0x05
  * - 3 bytes optional extended descriptor type tag string = 3 * 8-bit hex value
@@ -56,17 +56,16 @@ import java.util.Map;
  * - 3 bits unknown
  * - 2 bits is No of Channels
  * - 3 bits unknown
- *
+ * <p>
  * Section 6
- *
+ * <p>
  * - 1 byte SL config descriptor type tag = 8-bit hex value 0x06
  * - 3 bytes optional extended descriptor type tag string = 3 * 8-bit hex value
  * - types are 0x80,0x81,0xFE
  * - 1 byte descriptor type length = 8-bit unsigned length
  * - 1 byte SL value = 8-bit hex value set to 0x02
  */
-public class Mp4EsdsBox extends AbstractMp4Box
-{
+public class Mp4EsdsBox extends AbstractMp4Box {
     public static final int VERSION_FLAG_LENGTH = 1;
     public static final int OTHER_FLAG_LENGTH = 3;
     public static final int DESCRIPTOR_TYPE_LENGTH = 1;
@@ -101,18 +100,15 @@ public class Mp4EsdsBox extends AbstractMp4Box
     private static Map<Integer, AudioProfile> audioProfileMap;
 
 
-    static
-    {
+    static {
         //Create maps to speed up lookup from raw value to enum
         kindMap = new HashMap<Integer, Kind>();
-        for (Kind next : Kind.values())
-        {
+        for (Kind next : Kind.values()) {
             kindMap.put(next.getId(), next);
         }
 
         audioProfileMap = new HashMap<Integer, AudioProfile>();
-        for (AudioProfile next : AudioProfile.values())
-        {
+        for (AudioProfile next : AudioProfile.values()) {
             audioProfileMap.put(next.getId(), next);
         }
     }
@@ -123,8 +119,7 @@ public class Mp4EsdsBox extends AbstractMp4Box
      * @param header     header info
      * @param dataBuffer data of box (doesnt include header data)
      */
-    public Mp4EsdsBox(Mp4BoxHeader header, ByteBuffer dataBuffer)
-    {
+    public Mp4EsdsBox(Mp4BoxHeader header, ByteBuffer dataBuffer) {
         this.header = header;
         dataBuffer.order(ByteOrder.BIG_ENDIAN);
 
@@ -133,16 +128,14 @@ public class Mp4EsdsBox extends AbstractMp4Box
         dataBuffer.position(dataBuffer.position() + VERSION_FLAG_LENGTH + OTHER_FLAG_LENGTH);
 
         //Process Section 3 if exists
-        if (dataBuffer.get() == SECTION_THREE)
-        {
+        if (dataBuffer.get() == SECTION_THREE) {
             processSectionHeader(dataBuffer);
             //Skip Other Section 3 data
             dataBuffer.position(dataBuffer.position() + ES_ID_LENGTH + STREAM_PRIORITY_LENGTH);
         }
 
         //Process Section 4 (to getFields type and bitrate)
-        if (dataBuffer.get() == SECTION_FOUR)
-        {
+        if (dataBuffer.get() == SECTION_FOUR) {
             processSectionHeader(dataBuffer);
 
             //kind (in iTunes)
@@ -156,8 +149,7 @@ public class Mp4EsdsBox extends AbstractMp4Box
             this.avgBitrate = dataBuffer.getInt();
         }
         //Process Section 5,(to getFields no of channels and audioprofile(profile in itunes))
-        if (dataBuffer.get() == SECTION_FIVE)
-        {
+        if (dataBuffer.get() == SECTION_FIVE) {
             processSectionHeader(dataBuffer);
 
             //Audio Profile
@@ -173,24 +165,21 @@ public class Mp4EsdsBox extends AbstractMp4Box
 
     }
 
-    public int getNumberOfChannels()
-    {
+    public int getNumberOfChannels() {
         return numberOfChannels;
     }
 
     /**
      * @return maximum bit rate (bps)
      */
-    public int getMaxBitrate()
-    {
+    public int getMaxBitrate() {
         return maxBitrate;
     }
 
     /**
      * @return average bit rate (bps)
      */
-    public int getAvgBitrate()
-    {
+    public int getAvgBitrate() {
         return avgBitrate;
     }
 
@@ -200,18 +189,14 @@ public class Mp4EsdsBox extends AbstractMp4Box
      * @param dataBuffer
      * @return section header
      */
-    public int processSectionHeader(ByteBuffer dataBuffer)
-    {
+    public int processSectionHeader(ByteBuffer dataBuffer) {
         int datalength;
         byte nextByte = dataBuffer.get();
-        if (((nextByte & 0xFF) == FILLER_START) || ((nextByte & 0xFF) == FILLER_OTHER) || ((nextByte & 0xFF) == FILLER_END))
-        {
+        if (((nextByte & 0xFF) == FILLER_START) || ((nextByte & 0xFF) == FILLER_OTHER) || ((nextByte & 0xFF) == FILLER_END)) {
             dataBuffer.get();
             dataBuffer.get();
             datalength = Utils.u(dataBuffer.get());
-        }
-        else
-        {
+        } else {
             datalength = Utils.u(nextByte);
         }
         return datalength;
@@ -223,8 +208,7 @@ public class Mp4EsdsBox extends AbstractMp4Box
      *
      * @return the file type for the track
      */
-    public Kind getKind()
-    {
+    public Kind getKind() {
         return kind;
     }
 
@@ -233,16 +217,14 @@ public class Mp4EsdsBox extends AbstractMp4Box
      *
      * @return the audio profile
      */
-    public AudioProfile getAudioProfile()
-    {
+    public AudioProfile getAudioProfile() {
         return audioProfile;
     }
 
     /**
      * File type, held in Section 4 , only really expecting type 0x64 (AAC)
      */
-    public static enum Kind
-    {
+    public static enum Kind {
         V1(1),
         V2(2),
         MPEG4_VIDEO(32),
@@ -278,13 +260,11 @@ public class Mp4EsdsBox extends AbstractMp4Box
 
         private int id;
 
-        Kind(int id)
-        {
+        Kind(int id) {
             this.id = id;
         }
 
-        public int getId()
-        {
+        public int getId() {
             return id;
         }
     }
@@ -292,8 +272,7 @@ public class Mp4EsdsBox extends AbstractMp4Box
     /**
      * Audio profile, held in Section 5 this is usually type LOW_COMPLEXITY
      */
-    public static enum AudioProfile
-    {
+    public static enum AudioProfile {
         MAIN(1, "Main"),
         LOW_COMPLEXITY(2, "Low Complexity"),
         SCALEABLE(3, "Scaleable Sample rate"),
@@ -306,7 +285,8 @@ public class Mp4EsdsBox extends AbstractMp4Box
         HILN(10, "HILN"),
         TTSI(11, "TTSI"),
         MAIN_SYNTHESIS(12, "MAIN_SYNTHESIS"),
-        WAVETABLE(13, "WAVETABLE"),;
+        WAVETABLE(13, "WAVETABLE"),
+        ;
 
         private int id;
         private String description;
@@ -315,19 +295,16 @@ public class Mp4EsdsBox extends AbstractMp4Box
          * @param id          it is stored as in file
          * @param description human readable description
          */
-        AudioProfile(int id, String description)
-        {
+        AudioProfile(int id, String description) {
             this.id = id;
             this.description = description;
         }
 
-        public int getId()
-        {
+        public int getId() {
             return id;
         }
 
-        public String getDescription()
-        {
+        public String getDescription() {
             return description;
         }
     }

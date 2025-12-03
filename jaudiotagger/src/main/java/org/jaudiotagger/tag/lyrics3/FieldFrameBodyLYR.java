@@ -1,23 +1,23 @@
 /**
- *  @author : Paul Taylor
- *  @author : Eric Farng
- *
- *  Version @version:$Id$
- *
- *  MusicTag Copyright (C)2003,2004
- *
- *  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser
- *  General Public  License as published by the Free Software Foundation; either version 2.1 of the License,
- *  or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- *  the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *  See the GNU Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public License along with this library; if not,
- *  you can get a copy from http://www.opensource.org/licenses/lgpl-license.php or write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
- *
+ * @author : Paul Taylor
+ * @author : Eric Farng
+ * <p>
+ * Version @version:$Id$
+ * <p>
+ * MusicTag Copyright (C)2003,2004
+ * <p>
+ * This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser
+ * General Public  License as published by the Free Software Foundation; either version 2.1 of the License,
+ * or (at your option) any later version.
+ * <p>
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU Lesser General Public License along with this library; if not,
+ * you can get a copy from http://www.opensource.org/licenses/lgpl-license.php or write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ * <p>
  * Description:
  */
 package org.jaudiotagger.tag.lyrics3;
@@ -38,8 +38,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 
-public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
-{
+public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody {
     /**
      *
      */
@@ -48,18 +47,15 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
     /**
      * Creates a new FieldBodyLYR datatype.
      */
-    public FieldFrameBodyLYR()
-    {
+    public FieldFrameBodyLYR() {
     }
 
-    public FieldFrameBodyLYR(FieldFrameBodyLYR copyObject)
-    {
+    public FieldFrameBodyLYR(FieldFrameBodyLYR copyObject) {
         super(copyObject);
 
         Lyrics3Line old;
 
-        for (int i = 0; i < copyObject.lines.size(); i++)
-        {
+        for (int i = 0; i < copyObject.lines.size(); i++) {
             old = copyObject.lines.get(i);
             this.lines.add(new Lyrics3Line(old));
         }
@@ -70,8 +66,7 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
      *
      * @param line
      */
-    public FieldFrameBodyLYR(String line)
-    {
+    public FieldFrameBodyLYR(String line) {
         readString(line);
     }
 
@@ -80,8 +75,7 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
      *
      * @param sync
      */
-    public FieldFrameBodyLYR(FrameBodySYLT sync)
-    {
+    public FieldFrameBodyLYR(FrameBodySYLT sync) {
         addLyric(sync);
     }
 
@@ -90,8 +84,7 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
      *
      * @param unsync
      */
-    public FieldFrameBodyLYR(FrameBodyUSLT unsync)
-    {
+    public FieldFrameBodyLYR(FrameBodyUSLT unsync) {
         addLyric(unsync);
     }
 
@@ -100,8 +93,7 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
      * @param byteBuffer
      * @throws org.jaudiotagger.tag.InvalidTagException
      */
-    public FieldFrameBodyLYR(ByteBuffer byteBuffer) throws InvalidTagException
-    {
+    public FieldFrameBodyLYR(ByteBuffer byteBuffer) throws InvalidTagException {
 
         this.read(byteBuffer);
 
@@ -110,37 +102,32 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
     /**
      * @return
      */
-    public String getIdentifier()
-    {
+    public String getIdentifier() {
         return "LYR";
     }
 
     /**
      * @param str
      */
-    public void setLyric(String str)
-    {
+    public void setLyric(String str) {
         readString(str);
     }
 
     /**
      * @return
      */
-    public String getLyric()
-    {
+    public String getLyric() {
         return writeString();
     }
 
     /**
      * @return
      */
-    public int getSize()
-    {
+    public int getSize() {
         int size = 0;
         Lyrics3Line line;
 
-        for (Object line1 : lines)
-        {
+        for (Object line1 : lines) {
             line = (Lyrics3Line) line1;
             size += (line.getSize() + 2);
         }
@@ -154,19 +141,15 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
      * @param obj
      * @return
      */
-    public boolean isSubsetOf(Object obj)
-    {
-        if (!(obj instanceof FieldFrameBodyLYR))
-        {
+    public boolean isSubsetOf(Object obj) {
+        if (!(obj instanceof FieldFrameBodyLYR)) {
             return false;
         }
 
         ArrayList<Lyrics3Line> superset = ((FieldFrameBodyLYR) obj).lines;
 
-        for (Object line : lines)
-        {
-            if (!superset.contains(line))
-            {
+        for (Object line : lines) {
+            if (!superset.contains(line)) {
                 return false;
             }
         }
@@ -177,45 +160,40 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
     /**
      * @param sync
      */
-	public void addLyric(FrameBodySYLT sync) {
-		// SYLT frames are made of individual lines
-		Iterator<? extends AbstractDataType> iterator = sync.iterator();
-		HashMap<String, Lyrics3Line> lineMap = new HashMap<String, Lyrics3Line>();
+    public void addLyric(FrameBodySYLT sync) {
+        // SYLT frames are made of individual lines
+        Iterator<? extends AbstractDataType> iterator = sync.iterator();
+        HashMap<String, Lyrics3Line> lineMap = new HashMap<String, Lyrics3Line>();
 
-		while (iterator.hasNext()) 
-		{
-			AbstractDataType element = iterator.next();
-			if (element instanceof ID3v2LyricLine) 
-			{
-				ID3v2LyricLine currentLine = (ID3v2LyricLine) element;
+        while (iterator.hasNext()) {
+            AbstractDataType element = iterator.next();
+            if (element instanceof ID3v2LyricLine) {
+                ID3v2LyricLine currentLine = (ID3v2LyricLine) element;
 
-				// createField copy to use in new tag
-				currentLine = new ID3v2LyricLine(currentLine);
-				Lyrics3TimeStamp timeStamp = new Lyrics3TimeStamp("Time Stamp", this);
-				timeStamp.setTimeStamp(currentLine.getTimeStamp(), (byte) sync.getTimeStampFormat());
+                // createField copy to use in new tag
+                currentLine = new ID3v2LyricLine(currentLine);
+                Lyrics3TimeStamp timeStamp = new Lyrics3TimeStamp("Time Stamp", this);
+                timeStamp.setTimeStamp(currentLine.getTimeStamp(), (byte) sync.getTimeStampFormat());
 
-				Lyrics3Line newLine;
-				if (lineMap.containsKey(currentLine.getText())) 
-				{
-					newLine = lineMap.get(currentLine.getText());
-					newLine.addTimeStamp(timeStamp);
-				} else 
-				{
-					newLine = new Lyrics3Line("Lyric Line", this);
-					newLine.setLyric(currentLine);
-					newLine.setTimeStamp(timeStamp);
-					lineMap.put(currentLine.getText(), newLine);
-					lines.add(newLine);
-				}
-			}
-		}
-	}
+                Lyrics3Line newLine;
+                if (lineMap.containsKey(currentLine.getText())) {
+                    newLine = lineMap.get(currentLine.getText());
+                    newLine.addTimeStamp(timeStamp);
+                } else {
+                    newLine = new Lyrics3Line("Lyric Line", this);
+                    newLine.setLyric(currentLine);
+                    newLine.setTimeStamp(timeStamp);
+                    lineMap.put(currentLine.getText(), newLine);
+                    lines.add(newLine);
+                }
+            }
+        }
+    }
 
     /**
      * @param unsync
      */
-    public void addLyric(FrameBodyUSLT unsync)
-    {
+    public void addLyric(FrameBodyUSLT unsync) {
         // USLT frames are just long text string;
         Lyrics3Line line = new Lyrics3Line("Lyric Line", this);
         line.setLyric(unsync.getLyric());
@@ -226,10 +204,8 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
      * @param obj
      * @return
      */
-    public boolean equals(Object obj)
-    {
-        if (!(obj instanceof FieldFrameBodyLYR))
-        {
+    public boolean equals(Object obj) {
+        if (!(obj instanceof FieldFrameBodyLYR)) {
             return false;
         }
 
@@ -242,14 +218,11 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
     /**
      * @return
      */
-    public boolean hasTimeStamp()
-    {
+    public boolean hasTimeStamp() {
         boolean present = false;
 
-        for (Object line : lines)
-        {
-            if (((Lyrics3Line) line).hasTimeStamp())
-            {
+        for (Object line : lines) {
+            if (((Lyrics3Line) line).hasTimeStamp()) {
                 present = true;
             }
         }
@@ -260,8 +233,7 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
     /**
      * @return
      */
-    public Iterator<Lyrics3Line> iterator()
-    {
+    public Iterator<Lyrics3Line> iterator() {
         return lines.iterator();
     }
 
@@ -270,8 +242,7 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
      *
      *
      */
-    public void read(ByteBuffer byteBuffer) throws InvalidTagException
-    {
+    public void read(ByteBuffer byteBuffer) throws InvalidTagException {
         String lineString;
 
         byte[] buffer = new byte[5];
@@ -281,8 +252,7 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
 
         int size = Integer.parseInt(new String(buffer, 0, 5));
 
-        if ((size == 0) && (!TagOptionSingleton.getInstance().isLyrics3KeepEmptyFieldIfRead()))
-        {
+        if ((size == 0) && (!TagOptionSingleton.getInstance().isLyrics3KeepEmptyFieldIfRead())) {
             throw new InvalidTagException("Lyircs3v2 Field has size of zero.");
         }
 
@@ -297,12 +267,10 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
     /**
      * @return
      */
-    public String toString()
-    {
+    public String toString() {
         String str = getIdentifier() + " : ";
 
-        for (Object line : lines)
-        {
+        for (Object line : lines) {
             str += line.toString();
         }
 
@@ -313,8 +281,7 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
      * @param file
      * @throws java.io.IOException
      */
-    public void write(RandomAccessFile file) throws java.io.IOException
-    {
+    public void write(RandomAccessFile file) throws java.io.IOException {
         int size;
         int offset = 0;
         byte[] buffer = new byte[5];
@@ -323,28 +290,24 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
         size = getSize();
         str = Integer.toString(size);
 
-        for (int i = 0; i < (5 - str.length()); i++)
-        {
+        for (int i = 0; i < (5 - str.length()); i++) {
             buffer[i] = (byte) '0';
         }
 
         offset += (5 - str.length());
 
-        for (int i = 0; i < str.length(); i++)
-        {
+        for (int i = 0; i < str.length(); i++) {
             buffer[i + offset] = (byte) str.charAt(i);
         }
 
         offset += str.length();
         file.write(buffer, 0, 5);
 
-        if (size > 0)
-        {
+        if (size > 0) {
             str = writeString();
             buffer = new byte[str.length()];
 
-            for (int i = 0; i < str.length(); i++)
-            {
+            for (int i = 0; i < str.length(); i++) {
                 buffer[i] = (byte) str.charAt(i);
             }
 
@@ -355,8 +318,7 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
     /**
      * @param lineString
      */
-    private void readString(String lineString)
-    {
+    private void readString(String lineString) {
         // now readString each line and put in the vector;
         String token;
         int offset = 0;
@@ -365,8 +327,7 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
 
         Lyrics3Line line;
 
-        while (delim >= 0)
-        {
+        while (delim >= 0) {
             token = lineString.substring(offset, delim);
             line = new Lyrics3Line("Lyric Line", this);
             line.setLyric(token);
@@ -375,8 +336,7 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
             delim = lineString.indexOf(Lyrics3v2Fields.CRLF, offset);
         }
 
-        if (offset < lineString.length())
-        {
+        if (offset < lineString.length()) {
             token = lineString.substring(offset);
             line = new Lyrics3Line("Lyric Line", this);
             line.setLyric(token);
@@ -387,13 +347,11 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
     /**
      * @return
      */
-    private String writeString()
-    {
+    private String writeString() {
         Lyrics3Line line;
         String str = "";
 
-        for (Object line1 : lines)
-        {
+        for (Object line1 : lines) {
             line = (Lyrics3Line) line1;
             str += (line.writeString() + Lyrics3v2Fields.CRLF);
         }
@@ -406,8 +364,7 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody
     /**
      * TODO
      */
-    protected void setupObjectList()
-    {
+    protected void setupObjectList() {
 
     }
 }

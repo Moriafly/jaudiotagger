@@ -3,8 +3,7 @@ package org.jaudiotagger.audio.ogg.util;
 /**
  * Defines variables common to all vorbis headers
  */
-public interface VorbisHeader
-{
+public interface VorbisHeader {
     //Capture pattern at start of header
     public static final String CAPTURE_PATTERN = "vorbis";
 

@@ -8,8 +8,7 @@ import java.io.IOException;
 /**
  * Represents artwork in a format independent  way
  */
-public interface Artwork
-{
+public interface Artwork {
     public byte[] getBinaryData();
 
 
@@ -54,7 +53,7 @@ public interface Artwork
      * @param file
      * @throws IOException
      */
-    public void setFromFile(File file)  throws IOException;
+    public void setFromFile(File file) throws IOException;
 
     /**
      * Populate Artwork from MetadataBlockDataPicture as used by Flac and VorbisComment

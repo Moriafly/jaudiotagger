@@ -9,11 +9,12 @@ import java.nio.channels.FileChannel;
 /**
  * FS Chunk. Retrive samplerate.
  */
-public class FsChunk extends BaseChunk
-{
+public class FsChunk extends BaseChunk {
     private int sampleRate;
 
-    public FsChunk() {super();}
+    public FsChunk() {
+        super();
+    }
 
     @Override
     public void readDataChunk(FileChannel fc) throws IOException {
@@ -28,8 +29,7 @@ public class FsChunk extends BaseChunk
     /**
      * @return the sampleRate
      */
-    public int getSampleRate()
-    {
+    public int getSampleRate() {
         return sampleRate;
     }
 }

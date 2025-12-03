@@ -15,7 +15,7 @@ import static org.jaudiotagger.tag.mp4.field.Mp4FieldType.*;
  * <p>Simple metaitems use the parent atom id as their identifier whereas reverse dns (----) atoms use
  * the reversedns,issuer and name fields as their identifier. When the atom is non-0standard but follws the rules
  * we list it here with an additional Tagger field to indicate where the field was originally designed.
- *
+ * <p>
  * From:
  * http://www.hydrogenaudio.org/forums/index.php?showtopic=29120&st=0&p=251686&#entry251686
  * http://wiki.musicbrainz.org/PicardQt/TagMapping
@@ -23,87 +23,86 @@ import static org.jaudiotagger.tag.mp4.field.Mp4FieldType.*;
  *
  *
  */
-public enum Mp4FieldKey
-{
+public enum Mp4FieldKey {
 
     ACOUSTID_FINGERPRINT("com.apple.iTunes", "Acoustid Fingerprint", TEXT, Tagger.PICARD),
     ACOUSTID_FINGERPRINT_OLD("com.apple.iTunes", "AcoustId Fingerprint", TEXT, Tagger.PICARD),
     ACOUSTID_ID("com.apple.iTunes", "Acoustid Id", TEXT, Tagger.PICARD),
-    AK_ID("akID",Mp4TagFieldSubType.UNKNOWN, INTEGER, 1),
-    ALBUM("©alb",Mp4TagFieldSubType.TEXT, TEXT),
-    ALBUM_ARTIST("aART",Mp4TagFieldSubType.TEXT, TEXT),
-    ALBUM_ARTIST_SORT("soaa",Mp4TagFieldSubType.TEXT, TEXT),
-    ALBUM_SORT("soal",Mp4TagFieldSubType.TEXT, TEXT),
+    AK_ID("akID", Mp4TagFieldSubType.UNKNOWN, INTEGER, 1),
+    ALBUM("©alb", Mp4TagFieldSubType.TEXT, TEXT),
+    ALBUM_ARTIST("aART", Mp4TagFieldSubType.TEXT, TEXT),
+    ALBUM_ARTIST_SORT("soaa", Mp4TagFieldSubType.TEXT, TEXT),
+    ALBUM_SORT("soal", Mp4TagFieldSubType.TEXT, TEXT),
     ALBUM_YEAR("com.apple.iTunes", "ALBUM_YEAR", TEXT, Tagger.JAIKOZ),
-    AP_ID("apID",Mp4TagFieldSubType.UNKNOWN, TEXT),
+    AP_ID("apID", Mp4TagFieldSubType.UNKNOWN, TEXT),
     ARRANGER("com.apple.iTunes", "ARRANGER", TEXT, Tagger.PICARD),
-    ARRANGER_SORT("com.apple.iTunes","ARRANGER_SORT",  TEXT, Tagger.JAIKOZ),
-    ARTIST("©ART",Mp4TagFieldSubType.TEXT, TEXT),
+    ARRANGER_SORT("com.apple.iTunes", "ARRANGER_SORT", TEXT, Tagger.JAIKOZ),
+    ARTIST("©ART", Mp4TagFieldSubType.TEXT, TEXT),
     ARTISTS("com.apple.iTunes", "ARTISTS", TEXT, Tagger.JAIKOZ),
-    ARTISTS_SORT("com.apple.iTunes","ARTISTS_SORT",  TEXT, Tagger.JAIKOZ),
-    ALBUM_ARTISTS("com.apple.iTunes","ALBUM_ARTISTS",  TEXT, Tagger.JAIKOZ),
-    ALBUM_ARTISTS_SORT("com.apple.iTunes","ALBUM_ARTISTS_SORT",  TEXT, Tagger.JAIKOZ),
-    ARTIST_SORT("soar",Mp4TagFieldSubType.TEXT, TEXT),
-    ARTWORK("covr",Mp4TagFieldSubType.ARTWORK, COVERART_JPEG),
+    ARTISTS_SORT("com.apple.iTunes", "ARTISTS_SORT", TEXT, Tagger.JAIKOZ),
+    ALBUM_ARTISTS("com.apple.iTunes", "ALBUM_ARTISTS", TEXT, Tagger.JAIKOZ),
+    ALBUM_ARTISTS_SORT("com.apple.iTunes", "ALBUM_ARTISTS_SORT", TEXT, Tagger.JAIKOZ),
+    ARTIST_SORT("soar", Mp4TagFieldSubType.TEXT, TEXT),
+    ARTWORK("covr", Mp4TagFieldSubType.ARTWORK, COVERART_JPEG),
     ASIN("com.apple.iTunes", "ASIN", TEXT, Tagger.PICARD),
-    AT_ID("atID",Mp4TagFieldSubType.UNKNOWN, INTEGER, 4),
+    AT_ID("atID", Mp4TagFieldSubType.UNKNOWN, INTEGER, 4),
     AUDIO_ENGINEER("com.apple.iTunes", "AUDIO_ENGINEER", TEXT, Tagger.SONGKONG),
     AUDIO_ENGINEER_SORT("com.apple.iTunes", "AUDIO_ENGINEER_SORT", TEXT, Tagger.SONGKONG),
     BALANCE_ENGINEER("com.apple.iTunes", "BALANCE_ENGINEER", TEXT, Tagger.SONGKONG),
     BALANCE_ENGINEER_SORT("com.apple.iTunes", "BALANCE_ENGINEER_SORT", TEXT, Tagger.SONGKONG),
     BARCODE("com.apple.iTunes", "BARCODE", TEXT, Tagger.PICARD),
-    BPM("tmpo",Mp4TagFieldSubType.BYTE, INTEGER, 2),
+    BPM("tmpo", Mp4TagFieldSubType.BYTE, INTEGER, 2),
     CATALOGNO("com.apple.iTunes", "CATALOGNUMBER", TEXT, Tagger.PICARD),
-    CATEGORY("catg",Mp4TagFieldSubType.TEXT, TEXT),
+    CATEGORY("catg", Mp4TagFieldSubType.TEXT, TEXT),
     CDDB_1("com.apple.iTunes", "iTunes_CDDB_1", TEXT),
     CDDB_IDS("com.apple.iTunes", "iTunes_CDDB_IDs", TEXT),
     CDDB_TRACKNUMBER("com.apple.iTunes", "iTunes_CDDB_TrackNumber", TEXT),
-    CN_ID("cnID",Mp4TagFieldSubType.UNKNOWN, INTEGER, 4),
-    CHOIR("com.apple.iTunes","CHOR",  TEXT, Tagger.JAIKOZ),
-    CHOIR_SORT("com.apple.iTunes","CHOIR_SORT",  TEXT, Tagger.JAIKOZ),
-    CLASSICAL_CATALOG("com.apple.iTunes","CLASSICAL_CATALOG",  TEXT, Tagger.JAIKOZ),
-    CLASSICAL_NICKNAME("com.apple.iTunes","CLASSICAL_NICKNAME",  TEXT, Tagger.JAIKOZ),
-    COMMENT("©cmt",Mp4TagFieldSubType.TEXT, TEXT),
-    COMPILATION("cpil",Mp4TagFieldSubType.BYTE, INTEGER, 1),
-    COMPOSER("©wrt",Mp4TagFieldSubType.TEXT, TEXT),
-    COMPOSER_SORT("soco",Mp4TagFieldSubType.TEXT, TEXT),
+    CN_ID("cnID", Mp4TagFieldSubType.UNKNOWN, INTEGER, 4),
+    CHOIR("com.apple.iTunes", "CHOR", TEXT, Tagger.JAIKOZ),
+    CHOIR_SORT("com.apple.iTunes", "CHOIR_SORT", TEXT, Tagger.JAIKOZ),
+    CLASSICAL_CATALOG("com.apple.iTunes", "CLASSICAL_CATALOG", TEXT, Tagger.JAIKOZ),
+    CLASSICAL_NICKNAME("com.apple.iTunes", "CLASSICAL_NICKNAME", TEXT, Tagger.JAIKOZ),
+    COMMENT("©cmt", Mp4TagFieldSubType.TEXT, TEXT),
+    COMPILATION("cpil", Mp4TagFieldSubType.BYTE, INTEGER, 1),
+    COMPOSER("©wrt", Mp4TagFieldSubType.TEXT, TEXT),
+    COMPOSER_SORT("soco", Mp4TagFieldSubType.TEXT, TEXT),
     CONDUCTOR("com.apple.iTunes", "CONDUCTOR", TEXT, Tagger.PICARD),
-    CONDUCTOR_MM3BETA("cond",Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
-    CONDUCTOR_SORT("com.apple.iTunes","CONDUCTOR_SORT",  TEXT, Tagger.JAIKOZ),
-    CONTENT_TYPE("stik",Mp4TagFieldSubType.BYTE, INTEGER, 1),
-    COPYRIGHT("cprt",Mp4TagFieldSubType.TEXT, TEXT),
+    CONDUCTOR_MM3BETA("cond", Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
+    CONDUCTOR_SORT("com.apple.iTunes", "CONDUCTOR_SORT", TEXT, Tagger.JAIKOZ),
+    CONTENT_TYPE("stik", Mp4TagFieldSubType.BYTE, INTEGER, 1),
+    COPYRIGHT("cprt", Mp4TagFieldSubType.TEXT, TEXT),
     COUNTRY("com.apple.iTunes", "Country", TEXT, Tagger.PICARD),
     CREDITS("com.apple.iTunes", "CREDITS", TEXT, Tagger.SONGKONG),
-    CUSTOM_1("cus1",Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
-    CUSTOM_2("cus2",Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
-    CUSTOM_3("cus3",Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
-    CUSTOM_4("cus4",Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
-    CUSTOM_5("cus5",Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
-    DAY("©day",Mp4TagFieldSubType.TEXT, TEXT),
-    DESCRIPTION("desc",Mp4TagFieldSubType.TEXT, TEXT),
-    DISCNUMBER("disk",Mp4TagFieldSubType.DISC_NO, IMPLICIT),
+    CUSTOM_1("cus1", Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
+    CUSTOM_2("cus2", Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
+    CUSTOM_3("cus3", Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
+    CUSTOM_4("cus4", Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
+    CUSTOM_5("cus5", Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
+    DAY("©day", Mp4TagFieldSubType.TEXT, TEXT),
+    DESCRIPTION("desc", Mp4TagFieldSubType.TEXT, TEXT),
+    DISCNUMBER("disk", Mp4TagFieldSubType.DISC_NO, IMPLICIT),
     DISC_SUBTITLE("com.apple.iTunes", "DISCSUBTITLE", TEXT, Tagger.PICARD),
     DJMIXER("com.apple.iTunes", "DJMIXER", TEXT, Tagger.PICARD),
     DJMIXER_SORT("com.apple.iTunes", "DJMIXER_SORT", TEXT, Tagger.SONGKONG),
-    ENCODER("©too",Mp4TagFieldSubType.TEXT, TEXT),
+    ENCODER("©too", Mp4TagFieldSubType.TEXT, TEXT),
     ENGINEER("com.apple.iTunes", "ENGINEER", TEXT, Tagger.PICARD),
     ENGINEER_SORT("com.apple.iTunes", "ENGINEER_SORT", TEXT, Tagger.SONGKONG),
     ENSEMBLE("com.apple.iTunes", "Ensemble", TEXT, Tagger.JAIKOZ),
-    ENSEMBLE_SORT("com.apple.iTunes","Ensemble Sort",  TEXT, Tagger.JAIKOZ),
-    EPISODE_GLOBAL_ID("egid",Mp4TagFieldSubType.NUMBER, IMPLICIT),   //TODO Actually seems to store text but is marked as numeric!
+    ENSEMBLE_SORT("com.apple.iTunes", "Ensemble Sort", TEXT, Tagger.JAIKOZ),
+    EPISODE_GLOBAL_ID("egid", Mp4TagFieldSubType.NUMBER, IMPLICIT),   //TODO Actually seems to store text but is marked as numeric!
     FBPM("com.apple.iTunes", "fBPM", TEXT, Tagger.JAIKOZ),
-    GENRE("gnre",Mp4TagFieldSubType.GENRE, IMPLICIT),
-    GENRE_CUSTOM("©gen",Mp4TagFieldSubType.TEXT, TEXT),
-    GE_ID("geID",Mp4TagFieldSubType.UNKNOWN, INTEGER, 4),
+    GENRE("gnre", Mp4TagFieldSubType.GENRE, IMPLICIT),
+    GENRE_CUSTOM("©gen", Mp4TagFieldSubType.TEXT, TEXT),
+    GE_ID("geID", Mp4TagFieldSubType.UNKNOWN, INTEGER, 4),
     GROUP("com.apple.iTunes", "GROUP", TEXT, Tagger.JAIKOZ),
-    GROUPING("©grp",Mp4TagFieldSubType.TEXT, TEXT),
+    GROUPING("©grp", Mp4TagFieldSubType.TEXT, TEXT),
     INSTRUMENT("com.apple.iTunes", "INSTRUMENT", TEXT, Tagger.JAIKOZ),
-    INVOLVED_PEOPLE("peop",Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
+    INVOLVED_PEOPLE("peop", Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
     INVOLVEDPEOPLE("com.apple.iTunes", "involvedpeople", TEXT, Tagger.ROON),
     IPI("com.apple.iTunes", "IPI", TEXT, Tagger.PICARD),
     ISRC("com.apple.iTunes", "ISRC", TEXT, Tagger.JAIKOZ),
     ISWC("com.apple.iTunes", "ISWC", TEXT, Tagger.JAIKOZ),
-    ISRC_MMBETA("isrc",Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
+    ISRC_MMBETA("isrc", Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
     IS_CLASSICAL("com.apple.iTunes", "IS_CLASSICAL", TEXT, Tagger.JAIKOZ),
     IS_GREATEST_HITS("com.apple.iTunes", "IS_GREATEST_HITS", TEXT, Tagger.JAIKOZ),
     IS_HD("com.apple.iTunes", "IS_HD", TEXT, Tagger.JAIKOZ),
@@ -111,17 +110,17 @@ public enum Mp4FieldKey
     IS_SOUNDTRACK("com.apple.iTunes", "IS_SOUNDTRACK", TEXT, Tagger.JAIKOZ),
     ITUNES_NORM("com.apple.iTunes", "iTunNORM", TEXT),
     ITUNES_SMPB("com.apple.iTunes", "iTunSMPB", TEXT),
-    JAIKOZ_ID("com.apple.iTunes","JAIKOZ_ID",  TEXT, Tagger.JAIKOZ),
+    JAIKOZ_ID("com.apple.iTunes", "JAIKOZ_ID", TEXT, Tagger.JAIKOZ),
     KEY("com.apple.iTunes", "initialkey", TEXT),
-    KEYS("keys",Mp4TagFieldSubType.TEXT,TEXT),
-    KEYWORD("keyw",Mp4TagFieldSubType.TEXT, TEXT),
+    KEYS("keys", Mp4TagFieldSubType.TEXT, TEXT),
+    KEYWORD("keyw", Mp4TagFieldSubType.TEXT, TEXT),
     KEY_OLD("com.apple.iTunes", "KEY", TEXT, Tagger.JAIKOZ),
     LABEL("com.apple.iTunes", "LABEL", TEXT, Tagger.PICARD),
     LANGUAGE("com.apple.iTunes", "LANGUAGE", TEXT, Tagger.JAIKOZ),
     LYRICIST("com.apple.iTunes", "LYRICIST", TEXT, Tagger.PICARD),
     LYRICIST_SORT("com.apple.iTunes", "LYRICIST_SORT", TEXT, Tagger.JAIKOZ),
-    LYRICIST_MM3BETA("lyrc",Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
-    LYRICS("©lyr",Mp4TagFieldSubType.TEXT, TEXT),
+    LYRICIST_MM3BETA("lyrc", Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
+    LYRICS("©lyr", Mp4TagFieldSubType.TEXT, TEXT),
     MASTERING("com.apple.iTunes", "MASTERING", TEXT, Tagger.SONGKONG),
     MASTERING_SORT("com.apple.iTunes", "MASTERING_SORT", TEXT, Tagger.SONGKONG),
     MEDIA("com.apple.iTunes", "MEDIA", TEXT, Tagger.PICARD),
@@ -149,14 +148,14 @@ public enum Mp4FieldKey
     MOOD_ELECTRONIC("com.apple.iTunes", "MOOD_ELECTRONIC", TEXT, Tagger.JAIKOZ),
     MOOD_HAPPY("com.apple.iTunes", "MOOD_HAPPY", TEXT, Tagger.JAIKOZ),
     MOOD_INSTRUMENTAL("com.apple.iTunes", "MOOD_INSTRUMENTAL", TEXT, Tagger.JAIKOZ),
-    MOOD_MM3BETA("mood",Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
+    MOOD_MM3BETA("mood", Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
     MOOD_PARTY("com.apple.iTunes", "MOOD_PARTY", TEXT, Tagger.JAIKOZ),
     MOOD_RELAXED("com.apple.iTunes", "MOOD_RELAXED", TEXT, Tagger.JAIKOZ),
     MOOD_SAD("com.apple.iTunes", "MOOD_SAD", TEXT, Tagger.JAIKOZ),
     MOOD_VALENCE("com.apple.iTunes", "MOOD_VALENCE", TEXT, Tagger.JAIKOZ),
-    MOVEMENT("©mvn",Mp4TagFieldSubType.TEXT, TEXT),
-    MOVEMENT_NO("©mvi",Mp4TagFieldSubType.BYTE, INTEGER, 1),//Note unlike Trackno/Total uses two different fields
-    MOVEMENT_TOTAL("©mvc",Mp4TagFieldSubType.BYTE, INTEGER, 1),
+    MOVEMENT("©mvn", Mp4TagFieldSubType.TEXT, TEXT),
+    MOVEMENT_NO("©mvi", Mp4TagFieldSubType.BYTE, INTEGER, 1),//Note unlike Trackno/Total uses two different fields
+    MOVEMENT_TOTAL("©mvc", Mp4TagFieldSubType.BYTE, INTEGER, 1),
     MUSICBRAINZ_ALBUMARTISTID("com.apple.iTunes", "MusicBrainz Album Artist Id", TEXT, Tagger.PICARD),
     MUSICBRAINZ_ALBUMID("com.apple.iTunes", "MusicBrainz Album Id", TEXT, Tagger.PICARD),
     MUSICBRAINZ_ALBUM_STATUS("com.apple.iTunes", "MusicBrainz Album Status", TEXT, Tagger.PICARD),
@@ -169,87 +168,87 @@ public enum Mp4FieldKey
     MUSICBRAINZ_TRACKID("com.apple.iTunes", "MusicBrainz Track Id", TEXT, Tagger.PICARD),
     MUSICBRAINZ_WORK("com.apple.iTunes", "MUSICBRAINZ_WORK", TEXT, Tagger.JAIKOZ),
     MUSICBRAINZ_WORKID("com.apple.iTunes", "MusicBrainz Work Id", TEXT, Tagger.PICARD),
-    MUSICBRAINZ_RECORDING_WORK("com.apple.iTunes","MUSICBRAINZ_RECORDING_WORK",  TEXT, Tagger.JAIKOZ),
-    MUSICBRAINZ_RECORDING_WORK_ID("com.apple.iTunes","MUSICBRAINZ_RECORDING_WORK_ID",  TEXT, Tagger.JAIKOZ),
-    MUSICBRAINZ_WORK_PART_LEVEL1("com.apple.iTunes","MUSICBRAINZ_WORK_PART_LEVEL1",  TEXT, Tagger.JAIKOZ),
-    MUSICBRAINZ_WORK_PART_LEVEL1_ID("com.apple.iTunes","MUSICBRAINZ_WORK_PART_LEVEL1_ID",  TEXT, Tagger.JAIKOZ),
-    MUSICBRAINZ_WORK_PART_LEVEL1_TYPE("com.apple.iTunes","MUSICBRAINZ_WORK_PART_LEVEL1_TYPE",  TEXT, Tagger.JAIKOZ),
-    MUSICBRAINZ_WORK_PART_LEVEL2("com.apple.iTunes","MUSICBRAINZ_WORK_PART_LEVEL2",  TEXT, Tagger.JAIKOZ),
-    MUSICBRAINZ_WORK_PART_LEVEL2_ID("com.apple.iTunes","MUSICBRAINZ_WORK_PART_LEVEL2_ID",  TEXT, Tagger.JAIKOZ),
-    MUSICBRAINZ_WORK_PART_LEVEL2_TYPE("com.apple.iTunes","MUSICBRAINZ_WORK_PART_LEVEL2_TYPE",  TEXT, Tagger.JAIKOZ),
-    MUSICBRAINZ_WORK_PART_LEVEL3("com.apple.iTunes","MUSICBRAINZ_WORK_PART_LEVEL3",  TEXT, Tagger.JAIKOZ),
-    MUSICBRAINZ_WORK_PART_LEVEL3_ID("com.apple.iTunes","MUSICBRAINZ_WORK_PART_LEVEL3_ID",  TEXT, Tagger.JAIKOZ),
-    MUSICBRAINZ_WORK_PART_LEVEL3_TYPE("com.apple.iTunes","MUSICBRAINZ_WORK_PART_LEVEL3_TYPE",  TEXT, Tagger.JAIKOZ),
-    MUSICBRAINZ_WORK_PART_LEVEL4("com.apple.iTunes","MUSICBRAINZ_WORK_PART_LEVEL4",  TEXT, Tagger.JAIKOZ),
-    MUSICBRAINZ_WORK_PART_LEVEL4_ID("com.apple.iTunes","MUSICBRAINZ_WORK_PART_LEVEL4_ID",  TEXT, Tagger.JAIKOZ),
-    MUSICBRAINZ_WORK_PART_LEVEL4_TYPE("com.apple.iTunes","MUSICBRAINZ_WORK_PART_LEVEL4_TYPE",  TEXT, Tagger.JAIKOZ),
-    MUSICBRAINZ_WORK_PART_LEVEL5("com.apple.iTunes","MUSICBRAINZ_WORK_PART_LEVEL5",  TEXT, Tagger.JAIKOZ),
-    MUSICBRAINZ_WORK_PART_LEVEL5_ID("com.apple.iTunes","MUSICBRAINZ_WORK_PART_LEVEL5_ID",  TEXT, Tagger.JAIKOZ),
-    MUSICBRAINZ_WORK_PART_LEVEL5_TYPE("com.apple.iTunes","MUSICBRAINZ_WORK_PART_LEVEL5_TYPE",  TEXT, Tagger.JAIKOZ),
-    MUSICBRAINZ_WORK_PART_LEVEL6("com.apple.iTunes","MUSICBRAINZ_WORK_PART_LEVEL6",  TEXT, Tagger.JAIKOZ),
-    MUSICBRAINZ_WORK_PART_LEVEL6_ID("com.apple.iTunes","MUSICBRAINZ_WORK_PART_LEVEL6_ID",  TEXT, Tagger.JAIKOZ),
-    MUSICBRAINZ_WORK_PART_LEVEL6_TYPE("com.apple.iTunes","MUSICBRAINZ_WORK_PART_LEVEL6_TYPE",  TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_RECORDING_WORK("com.apple.iTunes", "MUSICBRAINZ_RECORDING_WORK", TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_RECORDING_WORK_ID("com.apple.iTunes", "MUSICBRAINZ_RECORDING_WORK_ID", TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_WORK_PART_LEVEL1("com.apple.iTunes", "MUSICBRAINZ_WORK_PART_LEVEL1", TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_WORK_PART_LEVEL1_ID("com.apple.iTunes", "MUSICBRAINZ_WORK_PART_LEVEL1_ID", TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_WORK_PART_LEVEL1_TYPE("com.apple.iTunes", "MUSICBRAINZ_WORK_PART_LEVEL1_TYPE", TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_WORK_PART_LEVEL2("com.apple.iTunes", "MUSICBRAINZ_WORK_PART_LEVEL2", TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_WORK_PART_LEVEL2_ID("com.apple.iTunes", "MUSICBRAINZ_WORK_PART_LEVEL2_ID", TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_WORK_PART_LEVEL2_TYPE("com.apple.iTunes", "MUSICBRAINZ_WORK_PART_LEVEL2_TYPE", TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_WORK_PART_LEVEL3("com.apple.iTunes", "MUSICBRAINZ_WORK_PART_LEVEL3", TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_WORK_PART_LEVEL3_ID("com.apple.iTunes", "MUSICBRAINZ_WORK_PART_LEVEL3_ID", TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_WORK_PART_LEVEL3_TYPE("com.apple.iTunes", "MUSICBRAINZ_WORK_PART_LEVEL3_TYPE", TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_WORK_PART_LEVEL4("com.apple.iTunes", "MUSICBRAINZ_WORK_PART_LEVEL4", TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_WORK_PART_LEVEL4_ID("com.apple.iTunes", "MUSICBRAINZ_WORK_PART_LEVEL4_ID", TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_WORK_PART_LEVEL4_TYPE("com.apple.iTunes", "MUSICBRAINZ_WORK_PART_LEVEL4_TYPE", TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_WORK_PART_LEVEL5("com.apple.iTunes", "MUSICBRAINZ_WORK_PART_LEVEL5", TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_WORK_PART_LEVEL5_ID("com.apple.iTunes", "MUSICBRAINZ_WORK_PART_LEVEL5_ID", TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_WORK_PART_LEVEL5_TYPE("com.apple.iTunes", "MUSICBRAINZ_WORK_PART_LEVEL5_TYPE", TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_WORK_PART_LEVEL6("com.apple.iTunes", "MUSICBRAINZ_WORK_PART_LEVEL6", TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_WORK_PART_LEVEL6_ID("com.apple.iTunes", "MUSICBRAINZ_WORK_PART_LEVEL6_ID", TEXT, Tagger.JAIKOZ),
+    MUSICBRAINZ_WORK_PART_LEVEL6_TYPE("com.apple.iTunes", "MUSICBRAINZ_WORK_PART_LEVEL6_TYPE", TEXT, Tagger.JAIKOZ),
     MUSICIP_PUID("com.apple.iTunes", "MusicIP PUID", TEXT, Tagger.PICARD),
-    OCCASION("occa",Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
-    OPUS("com.apple.iTunes","OPUS",  TEXT, Tagger.JAIKOZ),
+    OCCASION("occa", Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
+    OPUS("com.apple.iTunes", "OPUS", TEXT, Tagger.JAIKOZ),
     ORCHESTRA("com.apple.iTunes", "ORCHESTRA", TEXT, Tagger.PICARD),
-    ORCHESTRA_SORT("com.apple.iTunes","ORCHESTRA_SORT",  TEXT, Tagger.JAIKOZ),
-    ORIGINAL_ALBUM_TITLE("otit",Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
+    ORCHESTRA_SORT("com.apple.iTunes", "ORCHESTRA_SORT", TEXT, Tagger.JAIKOZ),
+    ORIGINAL_ALBUM_TITLE("otit", Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
     ORIGINALRELEASEDATE("com.apple.iTunes", "ORIGINALRELEASEDATE", TEXT, Tagger.ROON),
-    ORIGINAL_ARTIST("oart",Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
-    ORIGINAL_LYRICIST("olyr",Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
+    ORIGINAL_ARTIST("oart", Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
+    ORIGINAL_LYRICIST("olyr", Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
     OVERALL_WORK("com.apple.iTunes", "OVERALL_WORK", TEXT, Tagger.JAIKOZ),
     PART("com.apple.iTunes", "PART", TEXT, Tagger.PICARD),
-    PART_NUMBER("com.apple.iTunes","PARTNUMBER",  TEXT, Tagger.JAIKOZ),
-    PART_OF_GAPLESS_ALBUM("pgap",Mp4TagFieldSubType.BYTE, INTEGER),
-    PART_TYPE("com.apple.iTunes","PART_TYPE",  TEXT, Tagger.JAIKOZ),
+    PART_NUMBER("com.apple.iTunes", "PARTNUMBER", TEXT, Tagger.JAIKOZ),
+    PART_OF_GAPLESS_ALBUM("pgap", Mp4TagFieldSubType.BYTE, INTEGER),
+    PART_TYPE("com.apple.iTunes", "PART_TYPE", TEXT, Tagger.JAIKOZ),
     PERFORMER("com.apple.iTunes", "Performer", TEXT, Tagger.PICARD),
-    PERFORMER_NAME("com.apple.iTunes","PERFORMER_NAME",  TEXT, Tagger.JAIKOZ),
-    PERFORMER_NAME_SORT("com.apple.iTunes","PERFORMER_NAME_SORT",  TEXT, Tagger.JAIKOZ),
-    PERIOD("com.apple.iTunes","PERIOD",  TEXT, Tagger.JAIKOZ),
-    PL_ID("plID",Mp4TagFieldSubType.UNKNOWN, INTEGER, 8),
-    PODCAST_KEYWORD("keyw",Mp4TagFieldSubType.TEXT, TEXT),
-    PODCAST_URL("purl",Mp4TagFieldSubType.NUMBER, IMPLICIT),   //TODO Actually seems to store text but is marked as numeric!
+    PERFORMER_NAME("com.apple.iTunes", "PERFORMER_NAME", TEXT, Tagger.JAIKOZ),
+    PERFORMER_NAME_SORT("com.apple.iTunes", "PERFORMER_NAME_SORT", TEXT, Tagger.JAIKOZ),
+    PERIOD("com.apple.iTunes", "PERIOD", TEXT, Tagger.JAIKOZ),
+    PL_ID("plID", Mp4TagFieldSubType.UNKNOWN, INTEGER, 8),
+    PODCAST_KEYWORD("keyw", Mp4TagFieldSubType.TEXT, TEXT),
+    PODCAST_URL("purl", Mp4TagFieldSubType.NUMBER, IMPLICIT),   //TODO Actually seems to store text but is marked as numeric!
     PRODUCER("com.apple.iTunes", "PRODUCER", TEXT, Tagger.PICARD),
     PRODUCER_SORT("com.apple.iTunes", "PRODUCER_SORT", TEXT, Tagger.SONGKONG),
-    PURCHASE_DATE("purd",Mp4TagFieldSubType.TEXT, TEXT),
-    QUALITY("qual",Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
-    RANKING("com.apple.iTunes","RANKING",  TEXT, Tagger.JAIKOZ),
-    RATING("rtng",Mp4TagFieldSubType.BYTE, INTEGER,1),   //AFAIK Cant be setField in itunes, but if setField to explicit itunes will show as explicit
+    PURCHASE_DATE("purd", Mp4TagFieldSubType.TEXT, TEXT),
+    QUALITY("qual", Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
+    RANKING("com.apple.iTunes", "RANKING", TEXT, Tagger.JAIKOZ),
+    RATING("rtng", Mp4TagFieldSubType.BYTE, INTEGER, 1),   //AFAIK Cant be setField in itunes, but if setField to explicit itunes will show as explicit
     RECORDING_ENGINEER("com.apple.iTunes", "RECORDING_ENGINEER", TEXT, Tagger.SONGKONG),
     RECORDING_ENGINEER_SORT("com.apple.iTunes", "RECORDING_ENGINEER_SORT", TEXT, Tagger.SONGKONG),
-    RECORDINGDATE("com.apple.iTunes","RECORDINGDATE",  TEXT, Tagger.ROON),
-    RECORDINGSTARTDATE("com.apple.iTunes","RECORDINGSTARTDATE",  TEXT, Tagger.ROON),
-    RECORDINGENDDATE("com.apple.iTunes","RECORDINGENDDATE",  TEXT, Tagger.ROON),
-    RECORDINGLOCATION("com.apple.iTunes","RECORDINGLOCATION",  TEXT, Tagger.ROON),
+    RECORDINGDATE("com.apple.iTunes", "RECORDINGDATE", TEXT, Tagger.ROON),
+    RECORDINGSTARTDATE("com.apple.iTunes", "RECORDINGSTARTDATE", TEXT, Tagger.ROON),
+    RECORDINGENDDATE("com.apple.iTunes", "RECORDINGENDDATE", TEXT, Tagger.ROON),
+    RECORDINGLOCATION("com.apple.iTunes", "RECORDINGLOCATION", TEXT, Tagger.ROON),
     RELEASECOUNTRY("com.apple.iTunes", "MusicBrainz Album Release Country", TEXT, Tagger.PICARD),
     REMIXER("com.apple.iTunes", "REMIXER", TEXT, Tagger.PICARD),
     ROONALBUMTAG("com.apple.iTunes", "ROONALBUMTAG", TEXT, Tagger.ROON),
     ROONTRACKTAG("com.apple.iTunes", "ROONTRACKTAG", TEXT, Tagger.ROON),
-    SCORE("rate",Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),    //As in mark out of 100
+    SCORE("rate", Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),    //As in mark out of 100
     SCRIPT("com.apple.iTunes", "SCRIPT", TEXT, Tagger.JAIKOZ),
-    SF_ID("sfID",Mp4TagFieldSubType.UNKNOWN, INTEGER, 4),
-    SECTION("com.apple.iTunes","SECTION",  TEXT, Tagger.ROON),
-    SHOW("tvsh",Mp4TagFieldSubType.TEXT, TEXT),      //tv show but also used just as show
-    SHOW_SORT("sosn",Mp4TagFieldSubType.TEXT, TEXT),
-    SINGLE_DISC_TRACK_NO("com.apple.iTunes","SINGLE_DISC_TRACK_NO",  TEXT, Tagger.JAIKOZ),
-    SONGKONG_ID("com.apple.iTunes","SONGKONG_ID",  TEXT, Tagger.SONGKONG),
+    SF_ID("sfID", Mp4TagFieldSubType.UNKNOWN, INTEGER, 4),
+    SECTION("com.apple.iTunes", "SECTION", TEXT, Tagger.ROON),
+    SHOW("tvsh", Mp4TagFieldSubType.TEXT, TEXT),      //tv show but also used just as show
+    SHOW_SORT("sosn", Mp4TagFieldSubType.TEXT, TEXT),
+    SINGLE_DISC_TRACK_NO("com.apple.iTunes", "SINGLE_DISC_TRACK_NO", TEXT, Tagger.JAIKOZ),
+    SONGKONG_ID("com.apple.iTunes", "SONGKONG_ID", TEXT, Tagger.SONGKONG),
     SOUND_ENGINEER("com.apple.iTunes", "SOUND_ENGINEER", TEXT, Tagger.SONGKONG),
     SOUND_ENGINEER_SORT("com.apple.iTunes", "SOUND_ENGINEER_SORT", TEXT, Tagger.SONGKONG),
     SUBTITLE("com.apple.iTunes", "SUBTITLE", TEXT, Tagger.PICARD),
     TAGS("com.apple.iTunes", "TAGS", TEXT, Tagger.JAIKOZ),
-    TEMPO("empo",Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
+    TEMPO("empo", Mp4TagFieldSubType.TEXT, TEXT, Tagger.MEDIA_MONKEY),
     TIMBRE("com.apple.iTunes", "TIMBRE_BRIGHTNESS", TEXT, Tagger.JAIKOZ),
-    TITLE("©nam",Mp4TagFieldSubType.TEXT, TEXT),
+    TITLE("©nam", Mp4TagFieldSubType.TEXT, TEXT),
     TITLE_MOVEMENT("com.apple.iTunes", "TITLE_MOVEMENT", TEXT, Tagger.JAIKOZ),
-    TITLE_SORT("sonm",Mp4TagFieldSubType.TEXT, TEXT),
+    TITLE_SORT("sonm", Mp4TagFieldSubType.TEXT, TEXT),
     TONALITY("com.apple.iTunes", "TONALITY", TEXT, Tagger.JAIKOZ),
-    TOOL("tool",Mp4TagFieldSubType.BYTE, INTEGER, 4),
-    TRACK("trkn",Mp4TagFieldSubType.TRACK_NO, IMPLICIT),
-    TV_EPISODE("tves",Mp4TagFieldSubType.BYTE, INTEGER, 1),
-    TV_EPISODE_NUMBER("tven",Mp4TagFieldSubType.TEXT, TEXT),
-    TV_NETWORK("tvnn",Mp4TagFieldSubType.TEXT, TEXT),
-    TV_SEASON("tvsn",Mp4TagFieldSubType.BYTE, INTEGER, 1),
+    TOOL("tool", Mp4TagFieldSubType.BYTE, INTEGER, 4),
+    TRACK("trkn", Mp4TagFieldSubType.TRACK_NO, IMPLICIT),
+    TV_EPISODE("tves", Mp4TagFieldSubType.BYTE, INTEGER, 1),
+    TV_EPISODE_NUMBER("tven", Mp4TagFieldSubType.TEXT, TEXT),
+    TV_NETWORK("tvnn", Mp4TagFieldSubType.TEXT, TEXT),
+    TV_SEASON("tvsn", Mp4TagFieldSubType.BYTE, INTEGER, 1),
     URL_BANDCAMP_ARTIST_SITE("com.apple.iTunes", "URL_BANDCAMP_ARTIST_SITE", TEXT, Tagger.SONGKONG),
     URL_BANDCAMP_RELEASE_SITE("com.apple.iTunes", "URL_BANDCAMP_RELEASE_SITE", TEXT, Tagger.SONGKONG),
     URL_DISCOGS_ARTIST_SITE("com.apple.iTunes", "URL_DISCOGS_ARTIST_SITE", TEXT, Tagger.JAIKOZ),
@@ -261,8 +260,8 @@ public enum Mp4FieldKey
     URL_WIKIPEDIA_RELEASE_SITE("com.apple.iTunes", "URL_WIKIPEDIA_RELEASE_SITE", TEXT, Tagger.JAIKOZ),
     VERSION("com.apple.iTunes", "VERSION", TEXT, Tagger.ROON),
     WINAMP_PUBLISHER("com.nullsoft.winamp", "publisher", TEXT, Tagger.WINAMP),
-    WORK("©wrk",Mp4TagFieldSubType.TEXT, TEXT),
-    WORK_TYPE("com.apple.iTunes","WORK_TYPE",  TEXT, Tagger.JAIKOZ),
+    WORK("©wrk", Mp4TagFieldSubType.TEXT, TEXT),
+    WORK_TYPE("com.apple.iTunes", "WORK_TYPE", TEXT, Tagger.JAIKOZ),
     ;
     private Tagger tagger;
     private String fieldName;
@@ -278,11 +277,10 @@ public enum Mp4FieldKey
      * @param fieldName
      * @param fieldType of data atom
      */
-    Mp4FieldKey(String fieldName, Mp4TagFieldSubType subclassType, Mp4FieldType fieldType)
-    {
-        this.fieldName      = fieldName;
-        this.subclassType   = subclassType;
-        this.fieldType      = fieldType;
+    Mp4FieldKey(String fieldName, Mp4TagFieldSubType subclassType, Mp4FieldType fieldType) {
+        this.fieldName = fieldName;
+        this.subclassType = subclassType;
+        this.fieldType = fieldType;
     }
 
     /**
@@ -292,10 +290,9 @@ public enum Mp4FieldKey
      * @param fieldType of data atom
      * @param tagger
      */
-    Mp4FieldKey(String fieldName, Mp4TagFieldSubType subclassType,Mp4FieldType fieldType, Tagger tagger)
-    {
+    Mp4FieldKey(String fieldName, Mp4TagFieldSubType subclassType, Mp4FieldType fieldType, Tagger tagger) {
         this.fieldName = fieldName;
-        this.subclassType   = subclassType;
+        this.subclassType = subclassType;
         this.fieldType = fieldType;
         this.tagger = tagger;
     }
@@ -308,10 +305,9 @@ public enum Mp4FieldKey
      * @param fieldType
      * @param fieldLength
      */
-    Mp4FieldKey(String fieldName, Mp4TagFieldSubType subclassType,Mp4FieldType fieldType, int fieldLength)
-    {
+    Mp4FieldKey(String fieldName, Mp4TagFieldSubType subclassType, Mp4FieldType fieldType, int fieldLength) {
         this.fieldName = fieldName;
-        this.subclassType   = subclassType;
+        this.subclassType = subclassType;
         this.fieldType = fieldType;
         this.fieldLength = fieldLength;
     }
@@ -324,8 +320,7 @@ public enum Mp4FieldKey
      * @param identifier
      * @param fieldType  of data atom
      */
-    Mp4FieldKey(String issuer, String identifier, Mp4FieldType fieldType)
-    {
+    Mp4FieldKey(String issuer, String identifier, Mp4FieldType fieldType) {
 
         this.issuer = issuer;
         this.identifier = identifier;
@@ -344,8 +339,7 @@ public enum Mp4FieldKey
      * @param fieldType  of data atom
      * @param tagger
      */
-    Mp4FieldKey(String issuer, String identifier, Mp4FieldType fieldType, Tagger tagger)
-    {
+    Mp4FieldKey(String issuer, String identifier, Mp4FieldType fieldType, Tagger tagger) {
 
         this.issuer = issuer;
         this.identifier = identifier;
@@ -360,63 +354,54 @@ public enum Mp4FieldKey
      *
      * @return
      */
-    public String getFieldName()
-    {
+    public String getFieldName() {
         return fieldName;
     }
 
     /**
      * @return fieldtype
      */
-    public Mp4FieldType getFieldType()
-    {
+    public Mp4FieldType getFieldType() {
         return fieldType;
     }
 
-     /**
+    /**
      * @return subclassType
      */
-    public Mp4TagFieldSubType getSubClassFieldType()
-    {
+    public Mp4TagFieldSubType getSubClassFieldType() {
         return subclassType;
     }
 
     /**
      * @return true if this is a reverse dns key
      */
-    public boolean isReverseDnsType()
-    {
+    public boolean isReverseDnsType() {
         return identifier.startsWith(Mp4TagReverseDnsField.IDENTIFIER);
     }
 
     /**
      * @return issuer (Reverse Dns Fields Only)
      */
-    public String getIssuer()
-    {
+    public String getIssuer() {
         return issuer;
     }
 
     /**
      * @return identifier (Reverse Dns Fields Only)
      */
-    public String getIdentifier()
-    {
+    public String getIdentifier() {
         return identifier;
     }
 
     /**
      * @return field length (currently only used by byte fields)
      */
-    public int getFieldLength()
-    {
+    public int getFieldLength() {
         return fieldLength;
     }
 
-    public Tagger getTagger()
-    {
-        if (tagger != null)
-        {
+    public Tagger getTagger() {
+        if (tagger != null) {
             return tagger;
         }
         return Tagger.ITUNES;

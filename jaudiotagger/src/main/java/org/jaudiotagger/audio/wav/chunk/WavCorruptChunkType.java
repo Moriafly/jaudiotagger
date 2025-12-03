@@ -5,8 +5,7 @@ package org.jaudiotagger.audio.wav.chunk;
  *
  * @see org.jaudiotagger.audio.iff.Chunk
  */
-public enum WavCorruptChunkType
-{
+public enum WavCorruptChunkType {
     CORRUPT_ID3_EARLY("id3"),
     CORRUPT_ID3_LATE("d3 "),
     CORRUPT_LIST_EARLY("LIS"),
@@ -16,14 +15,12 @@ public enum WavCorruptChunkType
     private String code;
 
 
-    WavCorruptChunkType(final String code)
-    {
-        this.code=code;
+    WavCorruptChunkType(final String code) {
+        this.code = code;
     }
 
 
-    public String getCode()
-    {
+    public String getCode() {
         return code;
     }
 }

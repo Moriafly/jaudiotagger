@@ -5,18 +5,16 @@ package org.jaudiotagger.tag;
  *
  * <p>Should not happen with well written code, hence RuntimeException.
  */
-public class KeyNotFoundException extends RuntimeException
-{
+public class KeyNotFoundException extends RuntimeException {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -4532369719091873024L;
+     *
+     */
+    private static final long serialVersionUID = -4532369719091873024L;
 
-	/**
+    /**
      * Creates a new KeyNotFoundException datatype.
      */
-    public KeyNotFoundException()
-    {
+    public KeyNotFoundException() {
     }
 
     /**
@@ -24,8 +22,7 @@ public class KeyNotFoundException extends RuntimeException
      *
      * @param ex the cause.
      */
-    public KeyNotFoundException(Throwable ex)
-    {
+    public KeyNotFoundException(Throwable ex) {
         super(ex);
     }
 
@@ -34,8 +31,7 @@ public class KeyNotFoundException extends RuntimeException
      *
      * @param msg the detail message.
      */
-    public KeyNotFoundException(String msg)
-    {
+    public KeyNotFoundException(String msg) {
         super(msg);
     }
 
@@ -45,8 +41,7 @@ public class KeyNotFoundException extends RuntimeException
      * @param msg the detail message.
      * @param ex  the cause.
      */
-    public KeyNotFoundException(String msg, Throwable ex)
-    {
+    public KeyNotFoundException(String msg, Throwable ex) {
         super(msg, ex);
     }
 }

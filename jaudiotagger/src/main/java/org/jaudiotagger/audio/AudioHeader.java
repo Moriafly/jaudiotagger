@@ -5,8 +5,7 @@ package org.jaudiotagger.audio;
  *
  * <p>Contains info about the Audio Header
  */
-public interface AudioHeader
-{
+public interface AudioHeader {
     /**
      * @return the audio file type
      */
@@ -16,8 +15,6 @@ public interface AudioHeader
      * @return the ByteRate of the Audio, this is the total average amount of bytes of data sampled per second
      */
     public Integer getByteRate();
-
-
 
     /**
      * @return the BitRate of the Audio, this is the amount of kilobits of data sampled per second
@@ -33,7 +30,7 @@ public interface AudioHeader
     /**
      *
      * @return length of the audio data in bytes, exactly what this means depends on the audio format
-     *
+     * <p>
      * TODO currently only used by Wav/Aiff/Flac/Mp4
      */
     public Long getAudioDataLength();
@@ -42,7 +39,7 @@ public interface AudioHeader
     /**
      *
      * @return the location in the file where the audio samples start
-     *
+     * <p>
      * TODO currently only used by Wav/Aiff/Flac/Mp4
      */
     public Long getAudioDataStartPosition();
@@ -51,7 +48,7 @@ public interface AudioHeader
     /**
      *
      * @return the location in the file where the audio samples end
-     *
+     * <p>
      * TODO currently only used by Wav/Aiff/Flac/Mp4
      */
     public Long getAudioDataEndPosition();

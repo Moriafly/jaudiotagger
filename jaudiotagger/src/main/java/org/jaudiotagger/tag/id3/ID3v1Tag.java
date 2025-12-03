@@ -842,7 +842,7 @@ public class ID3v1Tag extends AbstractID3v1Tag implements Tag {
 
     /**
      * Write this tag to the file, replacing any tag previously existing
-     *
+     * <p>
      * TODO Support charset encoding
      *
      * @param file
