@@ -176,7 +176,7 @@ public class FlacTagWriter {
             MetadataBlockInfo blockInfo = new MetadataBlockInfo();
 
             //Read existing data
-            FlacStreamReader flacStream = new FlacStreamReader(fc, file.toString() + " ");
+            FlacStreamReader flacStream = new FlacStreamReader(fc);
             try {
                 flacStream.findStream();
             } catch (CannotReadException cre) {

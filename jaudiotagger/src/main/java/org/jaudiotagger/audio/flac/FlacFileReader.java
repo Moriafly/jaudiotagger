@@ -28,12 +28,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 /**
- * Read encoding and tag info for Flac file (open source lossless encoding)
+ * Read encoding and tag info for Flac file (open source lossless encoding).
  */
 public class FlacFileReader extends AudioFileReader2 {
-
-    private FlacInfoReader ir = new FlacInfoReader();
-    private FlacTagReader tr = new FlacTagReader();
+    private final FlacInfoReader ir = new FlacInfoReader();
+    private final FlacTagReader tr = new FlacTagReader();
 
     protected GenericAudioHeader getEncodingInfo(Path path) throws CannotReadException, IOException {
         return ir.read(path);

@@ -16,6 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 package org.jaudiotagger.audio.generic;
 
 import org.jaudiotagger.audio.AudioFile;
@@ -44,10 +45,7 @@ import java.util.logging.Logger;
  *@version	$Id$
  *@since	v0.02
  */
-
 public abstract class AudioFileReader {
-
-    // Logger Object
     public static Logger logger = Logger.getLogger("org.jaudiotagger.audio.generic");
     protected static final int MINIMUM_SIZE_FOR_VALID_AUDIO_FILE = 100;
 
@@ -62,7 +60,6 @@ public abstract class AudioFileReader {
      * @exception CannotReadException when an error occured during the parsing of the encoding infos
      */
     protected abstract GenericAudioHeader getEncodingInfo(RandomAccessFile raf) throws CannotReadException, IOException;
-
 
     /*
      * Same as above but returns the Tag contained in the file, or a new one.

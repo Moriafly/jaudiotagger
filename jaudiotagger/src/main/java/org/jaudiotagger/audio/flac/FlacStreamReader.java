@@ -21,57 +21,47 @@ public class FlacStreamReader {
     public static final int FLAC_STREAM_IDENTIFIER_LENGTH = 4;
     public static final String FLAC_STREAM_IDENTIFIER = "fLaC";
 
-    private FileChannel fc;
-    private String loggingName;
+    private final FileChannel fc;
     private int startOfFlacInFile;
 
     /**
-     * Create instance for holding stream info
-     *
-     * @param fc
-     * @param loggingName
+     * Create instance for holding stream info.
      */
-    public FlacStreamReader(FileChannel fc, String loggingName) {
+    public FlacStreamReader(FileChannel fc) {
         this.fc = fc;
-        this.loggingName = loggingName;
     }
 
     /**
-     * Reads the stream block to ensure it is a flac file
-     *
-     * @throws IOException
-     * @throws CannotReadException
+     * Reads the stream block to ensure it is a flac file.
      */
     public void findStream() throws IOException, CannotReadException {
-        //Begins tag parsing
+        // Begins tag parsing
         if (fc.size() == 0) {
-            //Empty File
-            throw new CannotReadException("Error: File empty" + " " + loggingName);
+            // Empty File
+            throw new CannotReadException("Error: File empty");
         }
         fc.position(0);
 
-        //FLAC Stream at start
+        // FLAC Stream at start
         if (isFlacHeader()) {
             startOfFlacInFile = 0;
             return;
         }
 
-        //Ok maybe there is an ID3v24tag first
+        // Ok maybe there is an ID3v24tag first
         if (isId3v2Tag()) {
             startOfFlacInFile = (int) (fc.position() - FLAC_STREAM_IDENTIFIER_LENGTH);
             return;
         }
-        throw new CannotReadException(loggingName + ErrorMessage.FLAC_NO_FLAC_HEADER_FOUND.getMsg());
+        throw new CannotReadException(ErrorMessage.FLAC_NO_FLAC_HEADER_FOUND.getMsg());
     }
 
     private boolean isId3v2Tag() throws IOException {
         fc.position(0);
         if (AbstractID3v2Tag.isId3Tag(fc)) {
-            logger.warning(loggingName + ErrorMessage.FLAC_CONTAINS_ID3TAG.getMsg(fc.position()));
-            //FLAC Stream immediately after end of id3 tag
-            if (isFlacHeader()) {
-                return true;
-            }
+            logger.warning(ErrorMessage.FLAC_CONTAINS_ID3TAG.getMsg(fc.position()));
+            // FLAC Stream immediately after end of id3 tag
+            return isFlacHeader();
         }
         return false;
     }
@@ -82,9 +72,10 @@ public class FlacStreamReader {
     }
 
     /**
-     * Usually flac header is at start of file, but unofficially an ID3 tag is allowed at the start of the file.
+     * Usually flac header is at start of file, but unofficially an ID3 tag is allowed at the start
+     * of the file.
      *
-     * @return the start of the Flac within file
+     * @return the start of the Flac within file.
      */
     public int getStartOfFlacInFile() {
         return startOfFlacInFile;

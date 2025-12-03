@@ -2,6 +2,7 @@
   <dictionary name="project">
     <words>
       <w>audiofile</w>
+      <w>blocktype</w>
       <w>cuesheet</w>
       <w>entagged</w>
       <w>jaudiotagger</w>

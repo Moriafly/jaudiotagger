@@ -41,7 +41,7 @@ public class FlacInfoReader {
     public FlacAudioHeader read(Path path) throws CannotReadException, IOException {
         logger.config(path + ":start");
         try (FileChannel fc = FileChannel.open(path)) {
-            FlacStreamReader flacStream = new FlacStreamReader(fc, path.toString() + " ");
+            FlacStreamReader flacStream = new FlacStreamReader(fc);
             flacStream.findStream();
 
             MetadataBlockDataStreamInfo mbdsi = null;
@@ -108,7 +108,7 @@ public class FlacInfoReader {
      */
     public int countMetaBlocks(File f) throws CannotReadException, IOException {
         try (FileChannel fc = FileChannel.open(f.toPath())) {
-            FlacStreamReader flacStream = new FlacStreamReader(fc, f.toPath().toString() + " ");
+            FlacStreamReader flacStream = new FlacStreamReader(fc);
             flacStream.findStream();
 
             boolean isLastBlock = false;
