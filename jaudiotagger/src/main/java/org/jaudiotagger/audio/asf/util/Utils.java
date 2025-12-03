@@ -20,17 +20,34 @@ package org.jaudiotagger.audio.asf.util;
 
 import org.jaudiotagger.audio.asf.data.AsfHeader;
 import org.jaudiotagger.audio.asf.data.GUID;
+import org.jaudiotagger.audio.asf.io.AsfExtHeaderReader;
+import org.jaudiotagger.audio.asf.io.AsfHeaderReader;
+import org.jaudiotagger.audio.asf.io.ChunkReader;
+import org.jaudiotagger.audio.asf.io.ContentBrandingReader;
+import org.jaudiotagger.audio.asf.io.ContentDescriptionReader;
+import org.jaudiotagger.audio.asf.io.FileHeaderReader;
+import org.jaudiotagger.audio.asf.io.FullRequestInputStream;
+import org.jaudiotagger.audio.asf.io.LanguageListReader;
+import org.jaudiotagger.audio.asf.io.MetadataReader;
+import org.jaudiotagger.audio.asf.io.StreamChunkReader;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.logging.ErrorMessage;
 
+import java.io.BufferedInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Some static Methods which are used in several Classes. <br>
@@ -38,6 +55,7 @@ import java.util.GregorianCalendar;
  * @author Christian Laireiter
  */
 public class Utils {
+    private static final Logger logger = Logger.getLogger("org.jaudiotagger.audio.asf");
 
     public static final long DIFF_BETWEEN_ASF_DATE_AND_JAVA_DATE = 11644470000000l;
     /**
@@ -479,4 +497,62 @@ public class Utils {
         out.write(toWrite);
     }
 
+    /**
+     * Static configuration for how to read ASF headers
+     */
+    private static final AsfHeaderReader HEADER_READER;
+    static {
+        final List<Class<? extends ChunkReader>> readers = new ArrayList<>();
+        readers.add(ContentDescriptionReader.class);
+        readers.add(ContentBrandingReader.class);
+        readers.add(MetadataReader.class);
+        readers.add(LanguageListReader.class);
+
+        final AsfExtHeaderReader extReader = new AsfExtHeaderReader(readers, true);
+        readers.add(FileHeaderReader.class);
+        readers.add(StreamChunkReader.class);
+        HEADER_READER = new AsfHeaderReader(readers, true);
+        HEADER_READER.setExtendedHeaderReader(extReader);
+    }
+
+    /**
+     * This method contains the low-level logic to adapt FileChannel to InputStream
+     * and parse the ASF structure.
+     * * NOTE: This logic is shared. You can either keep it here, or move it to
+     * org.jaudiotagger.audio.asf.util.Utils if you want InfoReader/TagReader
+     * to call it directly. For now, I kept it here and linked it.
+     */
+    public static AsfHeader readAsfHeader(FileChannel fc, String fileName) throws CannotReadException, IOException {
+        if (fc.size() == 0) {
+            throw new CannotReadException(ErrorMessage.GENERAL_READ_FAILED_DO_NOT_HAVE_PERMISSION_TO_READ_FILE.getMsg(fileName));
+        }
+
+        fc.position(0);
+        InputStream stream = new BufferedInputStream(Channels.newInputStream(fc));
+        stream = new FullRequestInputStream(stream);
+
+        try {
+            final org.jaudiotagger.audio.asf.data.GUID guid = Utils.readGUID(stream);
+            final AsfHeader header = HEADER_READER.read(guid, stream, 0);
+
+            if (header == null) {
+                throw new CannotReadException(ErrorMessage.ASF_HEADER_MISSING.getMsg(fileName));
+            }
+            if (header.getFileHeader() == null) {
+                throw new CannotReadException(ErrorMessage.ASF_FILE_HEADER_MISSING.getMsg(fileName));
+            }
+
+            // Just log a warning
+            if (header.getFileHeader().getFileSize().longValue() != fc.size()) {
+                logger.warning(ErrorMessage.ASF_FILE_HEADER_SIZE_DOES_NOT_MATCH_FILE_SIZE.getMsg(fileName, header.getFileHeader().getFileSize().longValue(), fc.size()));
+            }
+
+            return header;
+
+        } catch (final CannotReadException e) {
+            throw e;
+        } catch (final Exception e) {
+            throw new CannotReadException("\"" + fileName + "\" :" + e, e);
+        }
+    }
 }
