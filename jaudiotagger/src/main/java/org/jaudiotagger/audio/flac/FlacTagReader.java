@@ -86,9 +86,7 @@ public class FlacTagReader {
                             } catch (IOException | InvalidFrameException e) {
                                 logger.warning(path + "Unable to read picture metablock, ignoring: " + e.getMessage());
                             }
-
                             break;
-
 
                         case SEEKTABLE:
                             try {
