@@ -71,30 +71,29 @@ public class VorbisCommentReader {
     }
 
     /**
-     * @param rawdata
+     * @param rawData
      * @param isFramingBit
-     * @param path
      * @return logical representation of VorbisCommentTag
      * @throws IOException
      * @throws CannotReadException
      */
-    public VorbisCommentTag read(byte[] rawdata, boolean isFramingBit, Path path) throws IOException, CannotReadException {
+    public VorbisCommentTag read(byte[] rawData, boolean isFramingBit) throws IOException, CannotReadException {
 
         VorbisCommentTag tag = new VorbisCommentTag();
 
         byte[] b = new byte[FIELD_VENDOR_LENGTH_LENGTH];
-        System.arraycopy(rawdata, FIELD_VENDOR_LENGTH_POS, b, FIELD_VENDOR_LENGTH_POS, FIELD_VENDOR_LENGTH_LENGTH);
+        System.arraycopy(rawData, FIELD_VENDOR_LENGTH_POS, b, FIELD_VENDOR_LENGTH_POS, FIELD_VENDOR_LENGTH_LENGTH);
         int pos = FIELD_VENDOR_LENGTH_LENGTH;
         int vendorStringLength = Utils.getIntLE(b);
 
         b = new byte[vendorStringLength];
-        System.arraycopy(rawdata, pos, b, 0, vendorStringLength);
+        System.arraycopy(rawData, pos, b, 0, vendorStringLength);
         pos += vendorStringLength;
         tag.setVendor(new String(b, VorbisHeader.CHARSET_UTF_8));
         logger.config("Vendor is:" + tag.getVendor());
 
         b = new byte[FIELD_USER_COMMENT_LIST_LENGTH];
-        System.arraycopy(rawdata, pos, b, 0, FIELD_USER_COMMENT_LIST_LENGTH);
+        System.arraycopy(rawData, pos, b, 0, FIELD_USER_COMMENT_LIST_LENGTH);
         pos += FIELD_USER_COMMENT_LIST_LENGTH;
 
         int userComments = Utils.getIntLE(b);
@@ -102,29 +101,21 @@ public class VorbisCommentReader {
 
         for (int i = 0; i < userComments; i++) {
             b = new byte[FIELD_COMMENT_LENGTH_LENGTH];
-            System.arraycopy(rawdata, pos, b, 0, FIELD_COMMENT_LENGTH_LENGTH);
+            System.arraycopy(rawData, pos, b, 0, FIELD_COMMENT_LENGTH_LENGTH);
             pos += FIELD_COMMENT_LENGTH_LENGTH;
 
             int commentLength = Utils.getIntLE(b);
             logger.config("Next Comment Length:" + commentLength);
 
             if (commentLength > JAUDIOTAGGER_MAX_COMMENT_LENGTH) {
-                if (path != null) {
-                    logger.warning(path.toString() + ":" + ErrorMessage.VORBIS_COMMENT_LENGTH_TOO_LARGE.getMsg(commentLength));
-                } else {
-                    logger.warning(ErrorMessage.VORBIS_COMMENT_LENGTH_TOO_LARGE.getMsg(commentLength));
-                }
+                logger.warning(ErrorMessage.VORBIS_COMMENT_LENGTH_TOO_LARGE.getMsg(commentLength));
                 break;
-            } else if (commentLength > rawdata.length - pos) {
-                if (path != null) {
-                    logger.warning(path.toString() + ":" + ErrorMessage.VORBIS_COMMENT_LENGTH_LARGE_THAN_HEADER.getMsg(commentLength, rawdata.length - pos));
-                } else {
-                    logger.warning(ErrorMessage.VORBIS_COMMENT_LENGTH_LARGE_THAN_HEADER.getMsg(commentLength, rawdata.length));
-                }
+            } else if (commentLength > rawData.length - pos) {
+                logger.warning(ErrorMessage.VORBIS_COMMENT_LENGTH_LARGE_THAN_HEADER.getMsg(commentLength, rawData.length));
                 break;
             } else {
                 b = new byte[commentLength];
-                System.arraycopy(rawdata, pos, b, 0, commentLength);
+                System.arraycopy(rawData, pos, b, 0, commentLength);
                 pos += commentLength;
 
                 VorbisCommentTagField fieldComment = new VorbisCommentTagField(b);
@@ -133,10 +124,10 @@ public class VorbisCommentReader {
             }
         }
 
-        //Check framing bit, only exists when vorbisComment used within OggVorbis       
+        // Check framing bit, only exists when vorbisComment used within OggVorbis
         if (isFramingBit) {
-            if ((rawdata[pos] & 0x01) != 1) {
-                throw new CannotReadException(ErrorMessage.OGG_VORBIS_NO_FRAMING_BIT.getMsg((rawdata[pos] & 0x01)));
+            if ((rawData[pos] & 0x01) != 1) {
+                throw new CannotReadException(ErrorMessage.OGG_VORBIS_NO_FRAMING_BIT.getMsg((rawData[pos] & 0x01)));
             }
         }
         return tag;

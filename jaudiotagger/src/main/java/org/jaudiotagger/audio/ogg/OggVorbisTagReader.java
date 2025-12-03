@@ -67,7 +67,7 @@ public class OggVorbisTagReader {
         byte[] rawVorbisCommentData = readRawPacketData(raf);
 
         //Begin tag reading
-        VorbisCommentTag tag = vorbisCommentReader.read(rawVorbisCommentData, true, null);
+        VorbisCommentTag tag = vorbisCommentReader.read(rawVorbisCommentData, true);
         logger.fine("CompletedReadCommentTag");
         return tag;
     }

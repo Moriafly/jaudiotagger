@@ -76,7 +76,7 @@ public class FlacTagReader {
                         case VORBIS_COMMENT:
                             ByteBuffer commentHeaderRawPacket = ByteBuffer.allocate(mbh.getDataLength());
                             fc.read(commentHeaderRawPacket);
-                            tag = vorbisCommentReader.read(commentHeaderRawPacket.array(), false, path);
+                            tag = vorbisCommentReader.read(commentHeaderRawPacket.array(), false);
                             break;
 
                         case PICTURE:
