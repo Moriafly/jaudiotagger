@@ -1,40 +1,55 @@
-package org.jaudiotagger.audio.mp3;
-/**
+/*
  * @author : Paul Taylor
  * @author : Eric Farng
- * <p>
+ *
  * Version @version:$Id$
- * <p>
+ *
  * MusicTag Copyright (C)2003,2004
- * <p>
+ *
  * This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser
  * General Public  License as published by the Free Software Foundation; either version 2.1 of the License,
  * or (at your option) any later version.
- * <p>
+ *
  * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU Lesser General Public License along with this library; if not,
  * you can get a copy from http://www.opensource.org/licenses/lgpl-license.php or write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
- *
  */
 
+package org.jaudiotagger.audio.mp3;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.exceptions.*;
 import org.jaudiotagger.audio.generic.Permissions;
-import org.jaudiotagger.logging.*;
+import org.jaudiotagger.logging.AbstractTagDisplayFormatter;
+import org.jaudiotagger.logging.ErrorMessage;
+import org.jaudiotagger.logging.Hex;
+import org.jaudiotagger.logging.PlainTextTagDisplayFormatter;
+import org.jaudiotagger.logging.XMLTagDisplayFormatter;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
 import org.jaudiotagger.tag.TagNotFoundException;
 import org.jaudiotagger.tag.TagOptionSingleton;
-import org.jaudiotagger.tag.id3.*;
+import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
+import org.jaudiotagger.tag.id3.AbstractTag;
+import org.jaudiotagger.tag.id3.ID3v11Tag;
+import org.jaudiotagger.tag.id3.ID3v1Tag;
+import org.jaudiotagger.tag.id3.ID3v22Tag;
+import org.jaudiotagger.tag.id3.ID3v23Tag;
+import org.jaudiotagger.tag.id3.ID3v24Tag;
 import org.jaudiotagger.tag.lyrics3.AbstractLyrics3;
 import org.jaudiotagger.tag.reference.ID3V2Version;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
@@ -53,6 +68,11 @@ public class MP3File extends AudioFile {
     protected static AbstractTagDisplayFormatter tagFormatter;
 
     /**
+     * The ID3v1 tag that this file contains.
+     */
+    private ID3v1Tag id3v1tag = null;
+
+    /**
      * the ID3v2 tag that this file contains.
      */
     private AbstractID3v2Tag id3v2tag = null;
@@ -66,12 +86,6 @@ public class MP3File extends AudioFile {
      * The Lyrics3 tag that this file contains.
      */
     private AbstractLyrics3 lyrics3tag = null;
-
-
-    /**
-     * The ID3v1 tag that this file contains.
-     */
-    private ID3v1Tag id3v1tag = null;
 
     /**
      * Creates a new empty MP3File datatype that is not associated with a
