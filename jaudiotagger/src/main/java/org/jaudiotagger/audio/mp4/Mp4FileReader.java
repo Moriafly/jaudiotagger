@@ -16,6 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 package org.jaudiotagger.audio.mp4;
 
 import org.jaudiotagger.audio.exceptions.CannotReadException;
@@ -32,8 +33,8 @@ import java.nio.file.Path;
  * <p>This can read files containing either the .mp4 or .m4a suffixes
  */
 public class Mp4FileReader extends AudioFileReader2 {
-    private Mp4InfoReader ir = new Mp4InfoReader();
-    private Mp4TagReader tr = new Mp4TagReader();
+    private final Mp4InfoReader ir = new Mp4InfoReader();
+    private final Mp4TagReader tr = new Mp4TagReader();
 
     @Override
     protected GenericAudioHeader getEncodingInfo(Path path) throws CannotReadException, IOException {
