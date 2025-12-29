@@ -629,7 +629,7 @@ public class Mp4Tag extends AbstractTag {
     }
 
     /**
-     * Overidden to ensure cannot have both a genre field and a custom genre field
+     * Overridden to ensure cannot have both a genre field and a custom genre field.
      *
      * @param genericKey
      * @param value

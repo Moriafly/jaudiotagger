@@ -11,7 +11,6 @@ import static org.jaudiotagger.tag.mp4.field.Mp4FieldType.*;
  * convention. Atoms that contain metadata in other formats are not listed here because they need to be processed
  * specially.
  *
- *
  * <p>Simple metaitems use the parent atom id as their identifier whereas reverse dns (----) atoms use
  * the reversedns,issuer and name fields as their identifier. When the atom is non-0standard but follws the rules
  * we list it here with an additional Tagger field to indicate where the field was originally designed.
@@ -20,11 +19,8 @@ import static org.jaudiotagger.tag.mp4.field.Mp4FieldType.*;
  * http://www.hydrogenaudio.org/forums/index.php?showtopic=29120&st=0&p=251686&#entry251686
  * http://wiki.musicbrainz.org/PicardQt/TagMapping
  * http://atomicparsley.sourceforge.net/mpeg-4files.html
- *
- *
  */
 public enum Mp4FieldKey {
-
     ACOUSTID_FINGERPRINT("com.apple.iTunes", "Acoustid Fingerprint", TEXT, Tagger.PICARD),
     ACOUSTID_FINGERPRINT_OLD("com.apple.iTunes", "AcoustId Fingerprint", TEXT, Tagger.PICARD),
     ACOUSTID_ID("com.apple.iTunes", "Acoustid Id", TEXT, Tagger.PICARD),
