@@ -35,6 +35,8 @@ import org.jaudiotagger.audio.mp4.Mp4FileReader;
 import org.jaudiotagger.audio.mp4.Mp4FileWriter;
 import org.jaudiotagger.audio.ogg.OggFileReader;
 import org.jaudiotagger.audio.ogg.OggFileWriter;
+import org.jaudiotagger.audio.ogg.OggOpusFileReader;
+import org.jaudiotagger.audio.ogg.OggOpusFileWriter;
 import org.jaudiotagger.audio.real.RealFileReader;
 import org.jaudiotagger.audio.wav.WavFileReader;
 import org.jaudiotagger.audio.wav.WavFileWriter;
@@ -394,6 +396,7 @@ public class AudioFileIO {
         readers.put(SupportedFileFormat.AIFF.getFilesuffix(), new AiffFileReader());
         readers.put(SupportedFileFormat.DSF.getFilesuffix(), new DsfFileReader());
         readers.put(SupportedFileFormat.DFF.getFilesuffix(), new DffFileReader());
+        readers.put(SupportedFileFormat.OPUS.getFilesuffix(), new OggOpusFileReader());
 
         RealFileReader realReader = new RealFileReader();
         readers.put(SupportedFileFormat.RA.getFilesuffix(), realReader);
@@ -414,6 +417,7 @@ public class AudioFileIO {
         writers.put(SupportedFileFormat.AIFC.getFilesuffix(), new AiffFileWriter());
         writers.put(SupportedFileFormat.AIFF.getFilesuffix(), new AiffFileWriter());
         writers.put(SupportedFileFormat.DSF.getFilesuffix(), new DsfFileWriter());
+        writers.put(SupportedFileFormat.OPUS.getFilesuffix(), new OggOpusFileWriter());
 
         for (AudioFileWriter curr : writers.values()) {
             curr.setAudioFileModificationListener(this.modificationHandler);

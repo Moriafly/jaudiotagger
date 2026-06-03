@@ -303,6 +303,8 @@ public class AudioFile {
             return new AiffTag();
         } else if (SupportedFileFormat.DSF.getFilesuffix().equals(extension)) {
             return Dsf.createDefaultTag();
+        } else if (SupportedFileFormat.OPUS.getFilesuffix().equals(extension)) {
+            return VorbisCommentTag.createNewTag();
         } else {
             throw new RuntimeException("Unable to create default tag for this file format");
         }

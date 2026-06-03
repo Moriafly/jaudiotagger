@@ -21,7 +21,8 @@ public enum SupportedFileFormat {
     AIFF("aiff", "Aif"),
     AIFC("aifc", "Aif Compressed"),
     DSF("dsf", "Dsf"),
-    DFF("dff", "Dff");
+    DFF("dff", "Dff"),
+    OPUS("opus", "Opus");
 
     /**
      * File Suffix
