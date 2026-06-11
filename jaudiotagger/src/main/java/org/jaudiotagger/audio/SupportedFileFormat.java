@@ -22,7 +22,8 @@ public enum SupportedFileFormat {
     AIFC("aifc", "Aif Compressed"),
     DSF("dsf", "Dsf"),
     DFF("dff", "Dff"),
-    OPUS("opus", "Opus");
+    OPUS("opus", "Opus"),
+    APE("ape", "Ape");
 
     /**
      * File Suffix

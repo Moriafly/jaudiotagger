@@ -18,6 +18,8 @@
  */
 package org.jaudiotagger.audio;
 
+import org.jaudiotagger.audio.ape.ApeFileReader;
+import org.jaudiotagger.audio.ape.ApeFileWriter;
 import org.jaudiotagger.audio.aiff.AiffFileReader;
 import org.jaudiotagger.audio.aiff.AiffFileWriter;
 import org.jaudiotagger.audio.asf.AsfFileReader;
@@ -397,6 +399,7 @@ public class AudioFileIO {
         readers.put(SupportedFileFormat.DSF.getFilesuffix(), new DsfFileReader());
         readers.put(SupportedFileFormat.DFF.getFilesuffix(), new DffFileReader());
         readers.put(SupportedFileFormat.OPUS.getFilesuffix(), new OggOpusFileReader());
+        readers.put(SupportedFileFormat.APE.getFilesuffix(), new ApeFileReader());
 
         RealFileReader realReader = new RealFileReader();
         readers.put(SupportedFileFormat.RA.getFilesuffix(), realReader);
@@ -418,6 +421,7 @@ public class AudioFileIO {
         writers.put(SupportedFileFormat.AIFF.getFilesuffix(), new AiffFileWriter());
         writers.put(SupportedFileFormat.DSF.getFilesuffix(), new DsfFileWriter());
         writers.put(SupportedFileFormat.OPUS.getFilesuffix(), new OggOpusFileWriter());
+        writers.put(SupportedFileFormat.APE.getFilesuffix(), new ApeFileWriter());
 
         for (AudioFileWriter curr : writers.values()) {
             curr.setAudioFileModificationListener(this.modificationHandler);

@@ -1,0 +1,127 @@
+package org.jaudiotagger.audio.ape
+
+import org.jaudiotagger.audio.exceptions.CannotReadException
+import org.jaudiotagger.audio.generic.GenericAudioHeader
+import java.io.IOException
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
+import java.nio.file.Files
+import java.nio.file.Path
+
+class ApeInfoReader {
+
+    @Throws(CannotReadException::class, IOException::class)
+    fun read(path: Path): GenericAudioHeader {
+        val fileLength = Files.size(path)
+        if (fileLength < MINIMUM_FILE_SIZE) {
+            throw CannotReadException("File too small to be a valid APE file")
+        }
+
+        val channel = Files.newByteChannel(path)
+        channel.use {
+            val buf = ByteBuffer.allocate(76).order(ByteOrder.LITTLE_ENDIAN)
+            channel.read(buf)
+            buf.flip()
+
+            val magic = ByteArray(4)
+            buf.get(magic)
+            if (magic.decodeToString() != MAC_MAGIC) {
+                throw CannotReadException("Not a valid APE file: missing MAC magic")
+            }
+
+            val version = buf.short.toInt() and 0xFFFF
+            val audioHeader = GenericAudioHeader()
+            audioHeader.encodingType = "Monkey's Audio"
+            audioHeader.setLossless(true)
+
+            if (version >= 3980) {
+                readNewFormat(channel, audioHeader)
+            } else {
+                readOldFormat(buf, version, audioHeader)
+            }
+
+            return audioHeader
+        }
+    }
+
+    private fun readNewFormat(channel: java.nio.channels.SeekableByteChannel, audioHeader: GenericAudioHeader) {
+        // Read descriptor block: MAC(4) + version(2) + padding(2) + descriptor fields + md5(16)
+        val descBuf = ByteBuffer.allocate(52).order(ByteOrder.LITTLE_ENDIAN)
+        channel.position(0)
+        channel.read(descBuf)
+        descBuf.flip()
+
+        descBuf.position(6) // skip MAC + version
+        descBuf.short // padding
+        val descriptorLength = descBuf.int and 0xFFFFFFF
+        val headerLength = descBuf.int and 0xFFFFFFF
+        val seekTableLength = descBuf.int and 0xFFFFFFF
+        val wavHeaderLength = descBuf.int and 0xFFFFFFF
+        val audioDataLengthLow = descBuf.int and 0xFFFFFFF
+        val audioDataLengthHigh = descBuf.int and 0xFFFFFFF
+        val wavTailLength = descBuf.int and 0xFFFFFFF
+        // md5 (16 bytes) follows, we skip it
+
+        // Header block starts at offset = descriptorLength
+        val headerBuf = ByteBuffer.allocate(24).order(ByteOrder.LITTLE_ENDIAN)
+        channel.position(descriptorLength.toLong())
+        channel.read(headerBuf)
+        headerBuf.flip()
+
+        val compressionLevel = headerBuf.short.toInt() and 0xFFFF
+        val formatFlags = headerBuf.short.toInt() and 0xFFFF
+        val blocksPerFrame = headerBuf.int and 0xFFFFFFF
+        val finalFrameBlocks = headerBuf.int and 0xFFFFFFF
+        val totalFrames = headerBuf.int and 0xFFFFFFF
+        val bitsPerSample = headerBuf.short.toInt() and 0xFFFF
+        val channels = headerBuf.short.toInt() and 0xFFFF
+        val sampleRate = headerBuf.int and 0xFFFFFFF
+
+        val totalBlocks = (totalFrames - 1L) * blocksPerFrame + finalFrameBlocks
+        val duration = if (sampleRate > 0) totalBlocks.toDouble() / sampleRate else 0.0
+
+        audioHeader.setPreciseLength(duration)
+        audioHeader.setChannelNumber(channels)
+        audioHeader.setSamplingRate(sampleRate)
+        audioHeader.setBitsPerSample(bitsPerSample)
+        audioHeader.setBitRate(calculateBitrate(sampleRate, channels, bitsPerSample, duration))
+    }
+
+    private fun readOldFormat(buf: ByteBuffer, version: Int, audioHeader: GenericAudioHeader) {
+        buf.position(6)
+        val compressionLevel = buf.short.toInt() and 0xFFFF
+        val formatFlags = buf.short.toInt() and 0xFFFF
+        val channels = buf.short.toInt() and 0xFFFF
+        val sampleRate = buf.int and 0xFFFFFFF
+        val wavHeaderLength = buf.int and 0xFFFFFFF
+        val wavTailLength = buf.int and 0xFFFFFFF
+        val totalFrames = buf.int and 0xFFFFFFF
+        val finalFrameBlocks = buf.int and 0xFFFFFFF
+
+        val bitsPerSample = if (formatFlags and FORMAT_FLAG_24_BIT != 0) 24 else 16
+
+        val blocksPerFrame = if (version >= 3950) 73728 * 4
+            else if (version >= 3900 || (version >= 3800 && compressionLevel >= 4000)) 73728
+            else 9216
+
+        val totalBlocks = (totalFrames - 1L) * blocksPerFrame + finalFrameBlocks
+        val duration = if (sampleRate > 0) totalBlocks.toDouble() / sampleRate else 0.0
+
+        audioHeader.setPreciseLength(duration)
+        audioHeader.setChannelNumber(channels)
+        audioHeader.setSamplingRate(sampleRate)
+        audioHeader.setBitsPerSample(bitsPerSample)
+        audioHeader.setBitRate(calculateBitrate(sampleRate, channels, bitsPerSample, duration))
+    }
+
+    private fun calculateBitrate(sampleRate: Int, channels: Int, bitsPerSample: Int, duration: Double): Int {
+        if (duration <= 0) return 0
+        return ((sampleRate.toLong() * channels * bitsPerSample) / (duration * 1000)).toInt()
+    }
+
+    companion object {
+        private const val MAC_MAGIC = "MAC "
+        private const val MINIMUM_FILE_SIZE = 64L
+        private const val FORMAT_FLAG_24_BIT = 8
+    }
+}

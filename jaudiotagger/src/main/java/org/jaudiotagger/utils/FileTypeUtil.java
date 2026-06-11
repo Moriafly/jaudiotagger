@@ -25,6 +25,7 @@ public class FileTypeUtil {
     private static final Integer[] mp3v1Sig_3 = {0xFF, 0xF2};
     private static final Integer[] mp3v1Sig_4 = {0xFF, 0xFB};
     private static final Integer[] mp4Sig = {0x00, 0x00, 0x00, null, 0x66, 0x74, 0x79, 0x70};
+    private static final Integer[] apeSig = {0x4D, 0x41, 0x43, 0x20}; // "MAC "
 
     private static Map<String, Integer[]> signatureMap;
     private static Map<String, String> extensionMap;
@@ -37,6 +38,7 @@ public class FileTypeUtil {
         signatureMap.put("MP3IDv1_3", mp3v1Sig_3);
         signatureMap.put("MP3IDv1_4", mp3v1Sig_4);
         signatureMap.put("MP4", mp4Sig);
+        signatureMap.put("APE", apeSig);
 
         extensionMap = new HashMap<String, String>();
         extensionMap.put("MP3IDv2", "mp3");
@@ -45,6 +47,7 @@ public class FileTypeUtil {
         extensionMap.put("MP3IDv1_3", "mp3");
         extensionMap.put("MP3IDv1_4", "mp3");
         extensionMap.put("MP4", "m4a");
+        extensionMap.put("APE", "ape");
         extensionMap.put("UNKNOWN", "");
     }
 
