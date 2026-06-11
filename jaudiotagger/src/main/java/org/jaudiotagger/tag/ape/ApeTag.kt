@@ -28,7 +28,7 @@ class ApeTag : AbstractTag() {
             put(FieldKey.RECORD_LABEL, ApeFieldKey.LABEL)
             put(FieldKey.ISRC, ApeFieldKey.ISRC)
             put(FieldKey.BPM, ApeFieldKey.BPM)
-            put(FieldKey.LYRICS, ApeFieldKey.LYRICS)
+            put(FieldKey.LYRICS, ApeFieldKey.UNSYNCEDLYRICS)
             put(FieldKey.RATING, ApeFieldKey.RATING)
             put(FieldKey.ENCODER, ApeFieldKey.ENCODER)
             put(FieldKey.DISC_NO, ApeFieldKey.DISC)
@@ -36,9 +36,51 @@ class ApeTag : AbstractTag() {
             put(FieldKey.REMIXER, ApeFieldKey.REMIXER)
             put(FieldKey.COVER_ART, ApeFieldKey.COVER_ART_FRONT)
         }
+
+        // Fields that have fallback keys
+        private val fallbackKeys = mapOf(
+            FieldKey.LYRICS to listOf(ApeFieldKey.LYRICS, ApeFieldKey.UNSYNCEDLYRICS)
+        )
     }
 
     override fun isAllowedEncoding(enc: Charset): Boolean = enc == StandardCharsets.UTF_8
+
+    override fun addField(field: TagField) {
+        val normalizedField = normalizeField(field)
+        super.addField(normalizedField)
+    }
+
+    override fun setField(field: TagField) {
+        val normalizedField = normalizeField(field)
+        super.setField(normalizedField)
+    }
+
+    private fun normalizeField(field: TagField): TagField {
+        if (field is ApeTagField) {
+            val upperId = field.id.uppercase()
+            if (upperId != field.id) {
+                return ApeTagField(upperId, field.content)
+            }
+        } else if (field is ApeTagFieldBinary) {
+            val upperId = field.id.uppercase()
+            if (upperId != field.id) {
+                return ApeTagFieldBinary(upperId, field.getDescription(), field.getBinaryData())
+            }
+        }
+        return field
+    }
+
+    override fun getFields(id: String): List<TagField> = super.getFields(id.uppercase())
+
+    override fun getFirst(id: String): String = super.getFirst(id.uppercase())
+
+    override fun getFirstField(id: String): TagField? = super.getFirstField(id.uppercase())
+
+    override fun deleteField(key: String) {
+        super.deleteField(key.uppercase())
+    }
+
+    override fun hasField(id: String): Boolean = super.hasField(id.uppercase())
 
     override fun createField(genericKey: FieldKey, vararg value: String): TagField {
         val apeFieldKey = tagFieldToApeField[genericKey]
@@ -58,38 +100,68 @@ class ApeTag : AbstractTag() {
         return ApeTagField(apeFieldKey.fieldName, value)
     }
 
+    private fun getApeFieldNames(genericKey: FieldKey): List<String> {
+        // Check if there are fallback keys
+        fallbackKeys[genericKey]?.let { fallbacks ->
+            return fallbacks.map { it.fieldName }
+        }
+        // Default: single mapping
+        val apeFieldKey = tagFieldToApeField[genericKey] ?: return emptyList()
+        return listOf(apeFieldKey.fieldName)
+    }
+
     override fun getFirstField(genericKey: FieldKey): TagField? {
-        val apeFieldKey = tagFieldToApeField[genericKey] ?: return null
-        return getFirstField(apeFieldKey.fieldName)
+        val fieldNames = getApeFieldNames(genericKey)
+        for (name in fieldNames) {
+            val field = getFirstField(name)
+            if (field != null) return field
+        }
+        return null
     }
 
     override fun deleteField(genericKey: FieldKey) {
-        val apeFieldKey = tagFieldToApeField[genericKey]
-            ?: throw KeyNotFoundException("No APE field key for $genericKey")
-        deleteField(apeFieldKey.fieldName)
+        val fieldNames = getApeFieldNames(genericKey)
+        if (fieldNames.isEmpty()) {
+            throw KeyNotFoundException("No APE field key for $genericKey")
+        }
+        for (name in fieldNames) {
+            deleteField(name)
+        }
     }
 
     override fun getFields(genericKey: FieldKey): List<TagField> {
-        val apeFieldKey = tagFieldToApeField[genericKey]
-            ?: throw KeyNotFoundException("No APE field key for $genericKey")
-        return super.getFields(apeFieldKey.fieldName)
+        val fieldNames = getApeFieldNames(genericKey)
+        for (name in fieldNames) {
+            val fields = super.getFields(name)
+            if (fields.isNotEmpty()) return fields
+        }
+        return emptyList()
     }
 
     override fun getAll(genericKey: FieldKey): List<String> {
-        val apeFieldKey = tagFieldToApeField[genericKey]
-            ?: throw KeyNotFoundException("No APE field key for $genericKey")
-        return super.getAll(apeFieldKey.fieldName)
+        val fieldNames = getApeFieldNames(genericKey)
+        for (name in fieldNames) {
+            val values = super.getAll(name)
+            if (values.isNotEmpty()) return values
+        }
+        return emptyList()
     }
 
     override fun getValue(genericKey: FieldKey, n: Int): String {
-        val apeFieldKey = tagFieldToApeField[genericKey]
-            ?: throw KeyNotFoundException("No APE field key for $genericKey")
-        return getItem(apeFieldKey.fieldName, n)
+        val fieldNames = getApeFieldNames(genericKey)
+        for (name in fieldNames) {
+            val value = getItem(name, n)
+            if (value.isNotEmpty()) return value
+        }
+        return ""
     }
 
     override fun hasField(genericKey: FieldKey): Boolean {
-        val apeFieldKey = tagFieldToApeField[genericKey] ?: return false
-        return getFields(apeFieldKey.fieldName).isNotEmpty()
+        val fieldNames = getApeFieldNames(genericKey)
+        for (name in fieldNames) {
+            if (super.getFields(name).isNotEmpty()) return true
+        }
+        return false
     }
 
     override fun getArtworkList(): List<Artwork> {

@@ -1,10 +1,14 @@
 package com.moriafly.jaudiotagger
 
 import org.jaudiotagger.audio.AudioFileIO
+import org.jaudiotagger.tag.FieldKey
 import org.jaudiotagger.tag.ape.ApeTagField
 import org.jaudiotagger.tag.ape.ApeTagFieldBinary
 import java.io.File
 import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 class ApeTest {
     @Test
@@ -26,20 +30,27 @@ class ApeTest {
         println("Duration: ${audioFile.audioHeader.trackLength} seconds")
         println("Lossless: ${audioFile.audioHeader.isLossless}")
 
-        println("\n=== Tag ===")
+        println("\n=== Tag via FieldKey ===")
         val tag = audioFile.tag
         println("Tag type: ${tag.javaClass.simpleName}")
         println("Field count: ${tag.fieldCount}")
 
-        val fields = tag.getFields()
-        while (fields.hasNext()) {
-            val field = fields.next()
-            if (field is ApeTagFieldBinary) {
-                println("  ${field.id}: [binary ${field.getBinaryData().size} bytes]")
-            } else {
-                println("  ${field.id}: ${field}")
-            }
-        }
+        val title = tag.getFirst(FieldKey.TITLE)
+        val artist = tag.getFirst(FieldKey.ARTIST)
+        val album = tag.getFirst(FieldKey.ALBUM)
+        val lyrics = tag.getFirst(FieldKey.LYRICS)
+
+        println("TITLE: $title")
+        println("ARTIST: $artist")
+        println("ALBUM: $album")
+        println("LYRICS (first 50 chars): ${lyrics.take(50)}...")
+
+        assertNotNull(title, "TITLE should not be null")
+        assertTrue(title.isNotEmpty(), "TITLE should not be empty")
+        assertNotNull(artist, "ARTIST should not be null")
+        assertTrue(artist.isNotEmpty(), "ARTIST should not be empty")
+        assertNotNull(lyrics, "LYRICS should not be null")
+        assertTrue(lyrics.isNotEmpty(), "LYRICS should not be empty")
 
         println("\n=== Artwork ===")
         val artworkList = tag.artworkList

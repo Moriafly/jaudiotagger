@@ -33,6 +33,7 @@ enum class ApeFieldKey(
     LANGUAGE("Language", false, false),
     BPM("BPM", false, false),
     LYRICS("Lyrics", false, false),
+    UNSYNCEDLYRICS("UNSYNCEDLYRICS", false, false),
     RATING("Rating", false, false),
     ENCODER("Encoder", false, false),
     DISC("Disc", false, false),
