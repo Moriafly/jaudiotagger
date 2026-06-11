@@ -37,7 +37,7 @@ class ApeInfoReader {
             if (version >= 3980) {
                 readNewFormat(channel, audioHeader)
             } else {
-                readOldFormat(buf, version, audioHeader)
+                readOldFormat(buf, version, audioHeader, fileLength)
             }
 
             return audioHeader
@@ -45,13 +45,12 @@ class ApeInfoReader {
     }
 
     private fun readNewFormat(channel: java.nio.channels.SeekableByteChannel, audioHeader: GenericAudioHeader) {
-        // Read descriptor block: MAC(4) + version(2) + padding(2) + descriptor fields + md5(16)
         val descBuf = ByteBuffer.allocate(52).order(ByteOrder.LITTLE_ENDIAN)
         channel.position(0)
         channel.read(descBuf)
         descBuf.flip()
 
-        descBuf.position(6) // skip MAC + version
+        descBuf.position(6)
         descBuf.short // padding
         val descriptorLength = descBuf.int and 0xFFFFFFF
         val headerLength = descBuf.int and 0xFFFFFFF
@@ -60,9 +59,7 @@ class ApeInfoReader {
         val audioDataLengthLow = descBuf.int and 0xFFFFFFF
         val audioDataLengthHigh = descBuf.int and 0xFFFFFFF
         val wavTailLength = descBuf.int and 0xFFFFFFF
-        // md5 (16 bytes) follows, we skip it
 
-        // Header block starts at offset = descriptorLength
         val headerBuf = ByteBuffer.allocate(24).order(ByteOrder.LITTLE_ENDIAN)
         channel.position(descriptorLength.toLong())
         channel.read(headerBuf)
@@ -80,14 +77,16 @@ class ApeInfoReader {
         val totalBlocks = (totalFrames - 1L) * blocksPerFrame + finalFrameBlocks
         val duration = if (sampleRate > 0) totalBlocks.toDouble() / sampleRate else 0.0
 
+        val audioDataLength = (audioDataLengthHigh.toLong() shl 32) or (audioDataLengthLow.toLong() and 0xFFFFFFFFL)
+
         audioHeader.setPreciseLength(duration)
         audioHeader.setChannelNumber(channels)
         audioHeader.setSamplingRate(sampleRate)
         audioHeader.setBitsPerSample(bitsPerSample)
-        audioHeader.setBitRate(calculateBitrate(sampleRate, channels, bitsPerSample, duration))
+        audioHeader.setBitRate(calculateBitrateFromDataSize(audioDataLength, duration))
     }
 
-    private fun readOldFormat(buf: ByteBuffer, version: Int, audioHeader: GenericAudioHeader) {
+    private fun readOldFormat(buf: ByteBuffer, version: Int, audioHeader: GenericAudioHeader, fileLength: Long) {
         buf.position(6)
         val compressionLevel = buf.short.toInt() and 0xFFFF
         val formatFlags = buf.short.toInt() and 0xFFFF
@@ -107,21 +106,32 @@ class ApeInfoReader {
         val totalBlocks = (totalFrames - 1L) * blocksPerFrame + finalFrameBlocks
         val duration = if (sampleRate > 0) totalBlocks.toDouble() / sampleRate else 0.0
 
+        // For old format, estimate audio data size from file structure
+        var headerSize = 32 // basic header
+        if (formatFlags and FORMAT_FLAG_HAS_PEAK_LEVEL != 0) headerSize += 4
+        if (formatFlags and FORMAT_FLAG_HAS_SEEK_ELEMENTS != 0) headerSize += 4
+        if (formatFlags and FORMAT_FLAG_CREATE_WAV_HEADER == 0) headerSize += wavHeaderLength
+        val seekTableSize = totalFrames * 4
+        val audioDataLength = fileLength - headerSize - seekTableSize - wavTailLength
+
         audioHeader.setPreciseLength(duration)
         audioHeader.setChannelNumber(channels)
         audioHeader.setSamplingRate(sampleRate)
         audioHeader.setBitsPerSample(bitsPerSample)
-        audioHeader.setBitRate(calculateBitrate(sampleRate, channels, bitsPerSample, duration))
+        audioHeader.setBitRate(calculateBitrateFromDataSize(audioDataLength, duration))
     }
 
-    private fun calculateBitrate(sampleRate: Int, channels: Int, bitsPerSample: Int, duration: Double): Int {
-        if (duration <= 0) return 0
-        return ((sampleRate.toLong() * channels * bitsPerSample) / (duration * 1000)).toInt()
+    private fun calculateBitrateFromDataSize(dataLength: Long, duration: Double): Int {
+        if (duration <= 0 || dataLength <= 0) return 0
+        return ((dataLength * 8) / (duration * 1000)).toInt()
     }
 
     companion object {
         private const val MAC_MAGIC = "MAC "
         private const val MINIMUM_FILE_SIZE = 64L
         private const val FORMAT_FLAG_24_BIT = 8
+        private const val FORMAT_FLAG_HAS_PEAK_LEVEL = 4
+        private const val FORMAT_FLAG_HAS_SEEK_ELEMENTS = 16
+        private const val FORMAT_FLAG_CREATE_WAV_HEADER = 32
     }
 }
