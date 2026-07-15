@@ -11,6 +11,7 @@ specific APIs are available, currently supports reading and writing metadata for
 - Wav
 - Wma
 - Dsf
+- Ape
 
 The main project page is http://www.jthink.net/jaudiotagger/ and you can contact the main developer via email:paultaylor@jthink.net
 

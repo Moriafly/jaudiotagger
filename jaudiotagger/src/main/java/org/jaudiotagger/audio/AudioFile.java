@@ -9,6 +9,7 @@ import org.jaudiotagger.logging.ErrorMessage;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagOptionSingleton;
 import org.jaudiotagger.tag.aiff.AiffTag;
+import org.jaudiotagger.tag.ape.ApeTag;
 import org.jaudiotagger.tag.asf.AsfTag;
 import org.jaudiotagger.tag.flac.FlacTag;
 import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
@@ -305,6 +306,8 @@ public class AudioFile {
             return Dsf.createDefaultTag();
         } else if (SupportedFileFormat.OPUS.getFilesuffix().equals(extension)) {
             return VorbisCommentTag.createNewTag();
+        } else if (SupportedFileFormat.APE.getFilesuffix().equals(extension)) {
+            return new ApeTag();
         } else {
             throw new RuntimeException("Unable to create default tag for this file format");
         }
