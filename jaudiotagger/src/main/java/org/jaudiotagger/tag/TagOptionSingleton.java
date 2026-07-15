@@ -379,7 +379,6 @@ public class TagOptionSingleton {
 
     private EnumSet<FieldKey> overrideCharsetFields = EnumSet.noneOf(FieldKey.class);
 
-
     /**
      *
      */
@@ -1328,6 +1327,14 @@ public class TagOptionSingleton {
         return isOverrideCharsetForInfo;
     }
 
+    /**
+     * Enables forced charset decoding for WAV LIST/INFO fields. When no fields
+     * have been added through {@link #addOverrideCharsetFields(FieldKey)}, the
+     * override applies to every INFO field, including unknown vendor fields.
+     * Otherwise it applies only to the selected, recognized fields.
+     *
+     * @param isOverrideCharsetForInfo whether INFO charset override is enabled
+     */
     public void setOverrideCharsetForInfo(boolean isOverrideCharsetForInfo) {
         this.isOverrideCharsetForInfo = isOverrideCharsetForInfo;
     }

@@ -31,4 +31,17 @@ object JaudiotaggerFlags {
     @Suppress("MutableBareField")
     @JvmField
     var id3v1DecodingCharset: Charset = StandardCharsets.ISO_8859_1
+
+    /**
+     * Charset used when a WAV LIST/INFO chunk is not valid UTF-8.
+     *
+     * RIFF INFO does not declare its text charset. Leave this as `null` to preserve
+     * undecodable bytes losslessly as ISO-8859-1, or set it to the legacy charset
+     * used by the source application, such as GB18030.
+     *
+     * This is a fallback rather than a forced override: valid UTF-8 remains UTF-8.
+     */
+    @Suppress("MutableBareField")
+    @JvmField
+    var wavInfoFallbackCharset: Charset? = null
 }

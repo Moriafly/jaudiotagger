@@ -8,8 +8,8 @@ import java.util.Map;
 /**
  * Known Identifiers used in an INFO Chunk together with their mapping to a generic FieldKey (if known)
  * <p>
- * TODO There are multiple INFO fields that shoud be ampped to the same FieldKey (see QOOBUZ fields) but
- * we dont currently support that
+ * Multiple vendor identifiers may map to the same generic field. Exactly one
+ * identifier is marked as preferred for writing; the others are read aliases.
  */
 public enum WavInfoIdentifier {
     ARTIST("IART", FieldKey.ARTIST, 1),
@@ -37,17 +37,27 @@ public enum WavInfoIdentifier {
     TRACK_GAIN("ITGL", null, 20), //Currently No mapping to a FieldKey for this
     ALBUM_GAIN("IAGL", null, 21), //Currently No mapping to a FieldKey for this
     TWONKY_TRACKNO("itrk", null, 1), //Uses nonstandard field
+
+    // ID3-style identifiers written into LIST/INFO by some applications.
+    ID3_TRACKNO("TRCK", FieldKey.TRACK, 4, false),
+    ID3_ALBUM_ARTIST("IAAT", FieldKey.ALBUM_ARTIST, 7, false),
     ;
     private static final Map<String, WavInfoIdentifier> CODE_TYPE_MAP = new HashMap<String, WavInfoIdentifier>();
     private static final Map<FieldKey, WavInfoIdentifier> FIELDKEY_TYPE_MAP = new HashMap<FieldKey, WavInfoIdentifier>();
     private String code;
     private FieldKey fieldKey;
     private int preferredWriteOrder;
+    private boolean preferredForWriting;
 
     WavInfoIdentifier(String code, FieldKey fieldKey, int preferredWriteOrder) {
+        this(code, fieldKey, preferredWriteOrder, true);
+    }
+
+    WavInfoIdentifier(String code, FieldKey fieldKey, int preferredWriteOrder, boolean preferredForWriting) {
         this.code = code;
         this.fieldKey = fieldKey;
         this.preferredWriteOrder = preferredWriteOrder;
+        this.preferredForWriting = preferredForWriting;
     }
 
     public String getCode() {
@@ -86,7 +96,7 @@ public enum WavInfoIdentifier {
     public synchronized static WavInfoIdentifier getByFieldKey(final FieldKey fieldKey) {
         if (FIELDKEY_TYPE_MAP.isEmpty()) {
             for (final WavInfoIdentifier type : values()) {
-                if (type.getFieldKey() != null) {
+                if (type.getFieldKey() != null && type.preferredForWriting) {
                     FIELDKEY_TYPE_MAP.put(type.getFieldKey(), type);
                 }
             }
