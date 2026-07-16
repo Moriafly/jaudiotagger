@@ -20,6 +20,7 @@ public enum SupportedFileFormat {
     AIF("aif", "Aif"),
     AIFF("aiff", "Aif"),
     AIFC("aifc", "Aif Compressed"),
+    AAC("aac", "Aac"),
     DSF("dsf", "Dsf"),
     DFF("dff", "Dff"),
     OPUS("opus", "Opus"),

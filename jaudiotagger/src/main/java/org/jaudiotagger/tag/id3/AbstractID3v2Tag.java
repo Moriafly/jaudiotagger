@@ -1017,11 +1017,11 @@ public abstract class AbstractID3v2Tag extends AbstractID3Tag implements Tag {
         FileChannel fc = null;
         ByteBuffer bb = null;
         try {
-            //Files
+            // Files
             fis = new FileInputStream(file);
             fc = fis.getChannel();
 
-            //Read possible Tag header  Byte Buffer
+            // Read possible Tag header Byte Buffer
             bb = ByteBuffer.allocate(TAG_HEADER_LENGTH);
             fc.read(bb);
             bb.flip();
@@ -1038,30 +1038,33 @@ public abstract class AbstractID3v2Tag extends AbstractID3Tag implements Tag {
             }
         }
 
-        //ID3 identifier
+        // ID3 identifier
         byte[] tagIdentifier = new byte[FIELD_TAGID_LENGTH];
         bb.get(tagIdentifier, 0, FIELD_TAGID_LENGTH);
         if (!(Arrays.equals(tagIdentifier, TAG_ID))) {
             return 0;
         }
 
-        //Is it valid Major Version
+        // Is it valid Major Version
         byte majorVersion = bb.get();
         if ((majorVersion != ID3v22Tag.MAJOR_VERSION) && (majorVersion != ID3v23Tag.MAJOR_VERSION) && (majorVersion != ID3v24Tag.MAJOR_VERSION)) {
             return 0;
         }
 
-        //Skip Minor Version
+        // Skip Minor Version
         bb.get();
 
-        //Skip Flags
-        bb.get();
+        // Read flags so an ID3v2.4 footer can be included in the total tag size.
+        byte flags = bb.get();
 
-        //Get size as recorded in frame header
+        // Get size as recorded in frame header
         int frameSize = ID3SyncSafeInteger.bufferToValue(bb);
 
-        //addField header size to frame size
+        // Add header size and, for ID3v2.4, the optional footer size.
         frameSize += TAG_HEADER_LENGTH;
+        if (majorVersion == ID3v24Tag.MAJOR_VERSION && (flags & ID3v24Tag.MASK_V24_FOOTER_PRESENT) != 0) {
+            frameSize += TAG_HEADER_LENGTH;
+        }
         return frameSize;
     }
 

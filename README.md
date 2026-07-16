@@ -13,6 +13,9 @@ specific APIs are available, currently supports reading and writing metadata for
 - Dsf
 - Ape
 
+Additionally, raw ADTS AAC files (`.aac`) can be read, including files with a
+leading ID3v2 tag. AAC tag writing is not currently supported.
+
 The main project page is http://www.jthink.net/jaudiotagger/ and you can contact the main developer via email:paultaylor@jthink.net
 
 ## Requirements

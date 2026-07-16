@@ -1,9 +1,13 @@
 package org.jaudiotagger.utils;
 
+import org.jaudiotagger.audio.aac.AdtsHeader;
+import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -48,10 +52,19 @@ public class FileTypeUtil {
         extensionMap.put("MP3IDv1_4", "mp3");
         extensionMap.put("MP4", "m4a");
         extensionMap.put("APE", "ape");
+        extensionMap.put("AAC", "aac");
         extensionMap.put("UNKNOWN", "");
     }
 
     public static String getMagicFileType(File f) throws IOException {
+        long id3v2Size = AbstractID3v2Tag.getV2TagSizeIfExists(f);
+        if (id3v2Size > 0 && isAdtsStreamAt(f, id3v2Size)) {
+            return "AAC";
+        }
+        if (id3v2Size == 0 && isAdtsStreamAt(f, 0)) {
+            return "AAC";
+        }
+
         byte[] buffer = new byte[BUFFER_SIZE];
         InputStream in = new FileInputStream(f);
         try {
@@ -73,6 +86,41 @@ public class FileTypeUtil {
             return fileType;
         } finally {
             in.close();
+        }
+    }
+
+    private static boolean isAdtsStreamAt(File file, long offset) throws IOException {
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r")) {
+            long fileLength = randomAccessFile.length();
+            if (offset < 0 || fileLength - offset < AdtsHeader.MIN_HEADER_LENGTH) {
+                return false;
+            }
+
+            byte[] data = new byte[AdtsHeader.MIN_HEADER_LENGTH];
+            randomAccessFile.seek(offset);
+            randomAccessFile.readFully(data);
+            AdtsHeader firstHeader = AdtsHeader.parse(data);
+            if (firstHeader == null) {
+                return false;
+            }
+
+            long nextFrameOffset = offset + firstHeader.getFrameLength();
+            if (nextFrameOffset == fileLength) {
+                return true;
+            }
+            if (nextFrameOffset < offset || fileLength - nextFrameOffset < AdtsHeader.MIN_HEADER_LENGTH) {
+                return false;
+            }
+
+            randomAccessFile.seek(nextFrameOffset);
+            randomAccessFile.readFully(data);
+            AdtsHeader secondHeader = AdtsHeader.parse(data);
+            if (!firstHeader.hasSameAudioConfiguration(secondHeader)) {
+                return false;
+            }
+
+            long secondFrameEnd = nextFrameOffset + secondHeader.getFrameLength();
+            return secondFrameEnd >= nextFrameOffset && secondFrameEnd <= fileLength;
         }
     }
 
