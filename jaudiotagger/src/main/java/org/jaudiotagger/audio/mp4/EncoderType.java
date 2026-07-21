@@ -5,9 +5,9 @@ package org.jaudiotagger.audio.mp4;
  * mp4 container can be used to hold different types of files.
  */
 public enum EncoderType {
-    AAC("Aac"),
-    DRM_AAC("Aac (Drm)"),
-    APPLE_LOSSLESS("Alac"),
+    AAC("AAC"),
+    DRM_AAC("AAC (DRM)"),
+    APPLE_LOSSLESS("ALAC"),
     DOLBY_DIGITAL_PLUS("E-AC-3"),
     DOLBY_AC_4("AC-4"),
     ;
