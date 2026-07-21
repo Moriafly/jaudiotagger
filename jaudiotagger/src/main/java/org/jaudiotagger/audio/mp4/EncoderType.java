@@ -8,6 +8,8 @@ public enum EncoderType {
     AAC("Aac"),
     DRM_AAC("Aac (Drm)"),
     APPLE_LOSSLESS("Alac"),
+    DOLBY_DIGITAL_PLUS("E-AC-3"),
+    DOLBY_AC_4("AC-4"),
     ;
 
     private String description;

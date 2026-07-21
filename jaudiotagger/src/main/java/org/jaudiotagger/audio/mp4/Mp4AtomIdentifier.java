@@ -7,6 +7,7 @@ package org.jaudiotagger.audio.mp4;
  * Only a limited number are of interest to Jaudiotagger
  */
 public enum Mp4AtomIdentifier {
+    AC4("ac-4", "Dolby AC-4 Audio"),
     ALAC("alac", "Apple Lossless File"),
     ALBM("albm", "Album title and track number (user-data)"),
     AUTH("auth", "Media author name (user-data)"),
@@ -31,6 +32,7 @@ public enum Mp4AtomIdentifier {
     DSCP("dscp", "Media description (user-data)"),
     DSGD("dsgd", "DVB Sample Group Description Box"),
     DSTG("dstg", "DVB Sample to Group Box"),
+    EC3("ec-3", "Dolby Digital Plus Audio"),
     EDTS("edts", "Edit list container"),
     ELST("elst", "An edit list"),
     ESDS("esds", "Track codec specific information"),

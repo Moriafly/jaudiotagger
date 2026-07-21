@@ -260,6 +260,18 @@ public class Mp4InfoReader {
                                 info.setBitRate(alac.getBitRate() / Utils.KILOBYTE_MULTIPLIER);
                                 info.setBitsPerSample(alac.getSampleSize());
                             }
+                        } else {
+                            mvhdBuffer.position(positionAfterStsdHeaderAndData);
+                            boxHeader = Mp4BoxHeader.seekWithinLevel(mvhdBuffer, Mp4AtomIdentifier.EC3.getFieldName());
+                            if (boxHeader != null) {
+                                info.setEncodingType(EncoderType.DOLBY_DIGITAL_PLUS.getDescription());
+                            } else {
+                                mvhdBuffer.position(positionAfterStsdHeaderAndData);
+                                boxHeader = Mp4BoxHeader.seekWithinLevel(mvhdBuffer, Mp4AtomIdentifier.AC4.getFieldName());
+                                if (boxHeader != null) {
+                                    info.setEncodingType(EncoderType.DOLBY_AC_4.getDescription());
+                                }
+                            }
                         }
                     }
                 }
@@ -277,12 +289,14 @@ public class Mp4InfoReader {
 
             // VBR 比特率为 0 的问题
             // 如果从 esds 读取的比特率为 0，且有了时长和数据长度，则手动计算
+            Long audioDataLength = info.getAudioDataLength();
             if (info.getBitRateAsNumber() <= 0 &&
                     info.getPreciseTrackLength() > 0 &&
-                    info.getAudioDataLength() > 0
+                    audioDataLength != null &&
+                    audioDataLength > 0
             ) {
                 // (字节数 * 8) / (秒数 * 1000) = kbps
-                long bits = info.getAudioDataLength() * 8;
+                long bits = audioDataLength * 8;
                 double seconds = info.getPreciseTrackLength();
                 int calculatedBitRate = (int) (bits / (seconds * 1000));
 

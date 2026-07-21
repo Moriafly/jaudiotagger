@@ -11,6 +11,13 @@ public class Mp4AudioHeader extends GenericAudioHeader {
     private Mp4EsdsBox.AudioProfile profile;
     private String brand;
 
+    public Mp4AudioHeader() {
+        setBitRate(-1);
+        setChannelNumber(-1);
+        setBitsPerSample(-1);
+        setEncodingType("");
+    }
+
     public void setKind(Mp4EsdsBox.Kind kind) {
         this.kind = kind;
     }
