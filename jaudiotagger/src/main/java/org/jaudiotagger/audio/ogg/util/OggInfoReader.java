@@ -42,8 +42,6 @@ public class OggInfoReader {
         long start = raf.getFilePointer();
         GenericAudioHeader info = new GenericAudioHeader();
         logger.fine("Started");
-        long oldPos;
-
         //Check start of file does it have Ogg pattern
         byte[] b = new byte[OggPageHeader.CAPTURE_PATTERN.length];
         raf.read(b);
@@ -59,36 +57,9 @@ public class OggInfoReader {
             }
         }
 
-        //Now work backwards from file looking for the last ogg page, it reads the granule position for this last page
-        //which must be set.
-        //TODO should do buffering to cut down the number of file reads
-        raf.seek(start);
-        double pcmSamplesNumber = -1;
-        raf.seek(raf.length() - 2);
-        while (raf.getFilePointer() >= 4) {
-            if (raf.read() == OggPageHeader.CAPTURE_PATTERN[3]) {
-                raf.seek(raf.getFilePointer() - OggPageHeader.FIELD_CAPTURE_PATTERN_LENGTH);
-                byte[] ogg = new byte[3];
-                raf.readFully(ogg);
-                if (ogg[0] == OggPageHeader.CAPTURE_PATTERN[0] && ogg[1] == OggPageHeader.CAPTURE_PATTERN[1] && ogg[2] == OggPageHeader.CAPTURE_PATTERN[2]) {
-                    raf.seek(raf.getFilePointer() - 3);
-
-                    oldPos = raf.getFilePointer();
-                    raf.seek(raf.getFilePointer() + OggPageHeader.FIELD_PAGE_SEGMENTS_POS);
-                    int pageSegments = raf.readByte() & 0xFF; //Unsigned
-                    raf.seek(oldPos);
-
-                    b = new byte[OggPageHeader.OGG_PAGE_HEADER_FIXED_LENGTH + pageSegments];
-                    raf.readFully(b);
-
-                    OggPageHeader pageHeader = new OggPageHeader(b);
-                    raf.seek(0);
-                    pcmSamplesNumber = pageHeader.getAbsoluteGranulePosition();
-                    break;
-                }
-            }
-            raf.seek(raf.getFilePointer() - 2);
-        }
+        OggPageHeader lastPageHeader = OggPageHeader.readLast(raf);
+        raf.seek(0);
+        double pcmSamplesNumber = lastPageHeader.getAbsoluteGranulePosition();
 
         if (pcmSamplesNumber == -1) {
             //According to spec a value of -1 indicates no packet finished on this page, this should not occur

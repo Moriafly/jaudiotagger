@@ -75,37 +75,9 @@ public class OpusInfoReader {
         // Save file length for bitrate calculation
         long fileLength = raf.length();
 
-        // Now work backwards from end of file looking for the last Ogg page
-        // to read the granule position which must be set
+        OggPageHeader lastPageHeader = OggPageHeader.readLast(raf);
         raf.seek(start);
-        double pcmSamplesNumber = -1;
-        raf.seek(fileLength - 2);
-        while (raf.getFilePointer() >= 4) {
-            if (raf.read() == OggPageHeader.CAPTURE_PATTERN[3]) {
-                raf.seek(raf.getFilePointer() - OggPageHeader.FIELD_CAPTURE_PATTERN_LENGTH);
-                byte[] ogg = new byte[3];
-                raf.readFully(ogg);
-                if (ogg[0] == OggPageHeader.CAPTURE_PATTERN[0]
-                        && ogg[1] == OggPageHeader.CAPTURE_PATTERN[1]
-                        && ogg[2] == OggPageHeader.CAPTURE_PATTERN[2]) {
-                    raf.seek(raf.getFilePointer() - 3);
-
-                    long oldPos = raf.getFilePointer();
-                    raf.seek(raf.getFilePointer() + OggPageHeader.FIELD_PAGE_SEGMENTS_POS);
-                    int pageSegments = raf.readByte() & 0xFF;
-                    raf.seek(oldPos);
-
-                    b = new byte[OggPageHeader.OGG_PAGE_HEADER_FIXED_LENGTH + pageSegments];
-                    raf.readFully(b);
-
-                    OggPageHeader pageHeader = new OggPageHeader(b);
-                    raf.seek(start);
-                    pcmSamplesNumber = pageHeader.getAbsoluteGranulePosition();
-                    break;
-                }
-            }
-            raf.seek(raf.getFilePointer() - 2);
-        }
+        double pcmSamplesNumber = lastPageHeader.getAbsoluteGranulePosition();
 
         if (pcmSamplesNumber == -1) {
             // A value of -1 indicates no packet finished on this page, which should not occur

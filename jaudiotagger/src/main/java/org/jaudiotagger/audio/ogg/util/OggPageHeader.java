@@ -66,6 +66,8 @@ public class OggPageHeader {
     //Maximum size of page includes header and data (282 + 65025 = 65307 bytes)
     public static final int MAXIMUM_PAGE_SIZE = MAXIMUM_PAGE_HEADER_SIZE + MAXIMUM_PAGE_DATA_SIZE;
 
+    private static final int LAST_PAGE_SEARCH_BUFFER_SIZE = 64 * 1024;
+
     //Starting positions of the various attributes
     public static final int FIELD_CAPTURE_PATTERN_POS = 0;
     public static final int FIELD_STREAM_STRUCTURE_VERSION_POS = 4;
@@ -173,6 +175,44 @@ public class OggPageHeader {
         pageHeader.setStartByte(start);
         //Now just after PageHeader, ready for Packet Data
         return pageHeader;
+    }
+
+    /**
+     * Reads the last Ogg page header; the file pointer position is unspecified after this method returns.
+     */
+    static OggPageHeader readLast(RandomAccessFile raf) throws IOException, CannotReadException {
+        long searchEnd = raf.length() - 1;
+        long searchStartLimit = 1;
+        byte[] buffer = new byte[LAST_PAGE_SEARCH_BUFFER_SIZE];
+
+        while (searchEnd - searchStartLimit >= CAPTURE_PATTERN.length) {
+            long searchStart = Math.max(searchStartLimit, searchEnd - buffer.length);
+            int length = (int) (searchEnd - searchStart);
+            raf.seek(searchStart);
+            raf.readFully(buffer, 0, length);
+
+            for (int i = length - CAPTURE_PATTERN.length; i >= 0; i--) {
+                if (buffer[i] == CAPTURE_PATTERN[0]
+                        && buffer[i + 1] == CAPTURE_PATTERN[1]
+                        && buffer[i + 2] == CAPTURE_PATTERN[2]
+                        && buffer[i + 3] == CAPTURE_PATTERN[3]) {
+                    long pageStart = searchStart + i;
+                    raf.seek(pageStart + FIELD_PAGE_SEGMENTS_POS);
+                    int pageSegments = raf.readUnsignedByte();
+                    byte[] headerData = new byte[OGG_PAGE_HEADER_FIXED_LENGTH + pageSegments];
+                    raf.seek(pageStart);
+                    raf.readFully(headerData);
+
+                    OggPageHeader pageHeader = new OggPageHeader(headerData);
+                    pageHeader.setStartByte(pageStart);
+                    return pageHeader;
+                }
+            }
+
+            searchEnd = searchStart + CAPTURE_PATTERN.length - 1;
+        }
+
+        throw new CannotReadException(ErrorMessage.OGG_VORBIS_NO_SETUP_BLOCK.getMsg());
     }
 
     public OggPageHeader(byte[] b) {
