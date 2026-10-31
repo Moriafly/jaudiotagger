@@ -110,12 +110,12 @@ public class TagOptionSingleton {
     /**
      *
      */
-    private static String DEFAULT = "default";
+    private static final String DEFAULT = "default";
 
     /**
      *
      */
-    private static String defaultOptions = DEFAULT;
+    private static volatile String defaultOptions = DEFAULT;
 
     /**
      *
@@ -403,7 +403,7 @@ public class TagOptionSingleton {
      * @param instanceKey
      * @return
      */
-    public static TagOptionSingleton getInstance(String instanceKey) {
+    public static synchronized TagOptionSingleton getInstance(String instanceKey) {
         TagOptionSingleton tagOptions = tagOptionTable.get(instanceKey);
 
         if (tagOptions == null) {
