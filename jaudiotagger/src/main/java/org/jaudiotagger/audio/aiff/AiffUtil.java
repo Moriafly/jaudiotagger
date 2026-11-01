@@ -48,7 +48,9 @@ public class AiffUtil {
      * Format a date as text
      */
     public static String formatDate(Date dat) {
-        return dateFmt.format(dat);
+        synchronized (dateFmt) {
+            return dateFmt.format(dat);
+        }
     }
 
 
